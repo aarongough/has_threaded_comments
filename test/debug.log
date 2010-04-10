@@ -4356,3 +4356,141 @@
   [4;35;1mSQL (0.2ms)[0m   [0mSELECT count(*) AS count_all FROM "threaded_comments" [0m
   [4;36;1mThreadedComment Create (0.3ms)[0m   [0;1mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES('Test Commenter', 20, 0, '2010-04-10 23:06:06', 'This the medium size comment body...', 'Book', 't', 1, 0, 'test@example.com', '2010-04-10 23:06:06')[0m
   [4;35;1mThreadedComment Load (0.4ms)[0m   [0mSELECT * FROM "threaded_comments" WHERE ("threaded_comments"."id" = 23) [0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mselect sqlite_version(*)[0m
+  [4;35;1mSQL (0.5ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (57.4ms)[0m   [0;1mDROP TABLE "books"[0m
+  [4;35;1mSQL (2.8ms)[0m   [0mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "content" text) [0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (3.1ms)[0m   [0mDROP TABLE "articles"[0m
+  [4;36;1mSQL (2.9ms)[0m   [0;1mCREATE TABLE "articles" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "content" text) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (3.7ms)[0m   [0;1mDROP TABLE "threaded_comments"[0m
+  [4;35;1mSQL (3.5ms)[0m   [0mCREATE TABLE "threaded_comments" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "body" text, "rating" integer DEFAULT 0, "flags" integer DEFAULT 0, "email" varchar(255), "notifications" boolean DEFAULT 't', "parent_id" integer DEFAULT 0, "threaded_comment_polymorphic_id" integer, "threaded_comment_polymorphic_type" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM "schema_migrations"[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mselect sqlite_version(*)[0m
+  [4;35;1mSQL (0.5ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (2.6ms)[0m   [0;1mDROP TABLE "books"[0m
+  [4;35;1mSQL (3.5ms)[0m   [0mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "content" text) [0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (3.0ms)[0m   [0mDROP TABLE "articles"[0m
+  [4;36;1mSQL (3.8ms)[0m   [0;1mCREATE TABLE "articles" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "content" text) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (3.0ms)[0m   [0;1mDROP TABLE "threaded_comments"[0m
+  [4;35;1mSQL (2.7ms)[0m   [0mCREATE TABLE "threaded_comments" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "body" text, "rating" integer DEFAULT 0, "flags" integer DEFAULT 0, "email" varchar(255), "notifications" boolean DEFAULT 't', "parent_id" integer DEFAULT 0, "threaded_comment_polymorphic_id" integer, "threaded_comment_polymorphic_type" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM "schema_migrations"[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mselect sqlite_version(*)[0m
+  [4;35;1mSQL (0.5ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (2.8ms)[0m   [0;1mDROP TABLE "books"[0m
+  [4;35;1mSQL (2.9ms)[0m   [0mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "content" text) [0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (3.1ms)[0m   [0mDROP TABLE "articles"[0m
+  [4;36;1mSQL (3.2ms)[0m   [0;1mCREATE TABLE "articles" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "content" text) [0m
+  [4;35;1mSQL (0.5ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (2.6ms)[0m   [0;1mDROP TABLE "threaded_comments"[0m
+  [4;35;1mSQL (3.4ms)[0m   [0mCREATE TABLE "threaded_comments" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "body" text, "rating" integer DEFAULT 0, "flags" integer DEFAULT 0, "email" varchar(255), "notifications" boolean DEFAULT 't', "parent_id" integer DEFAULT 0, "threaded_comment_polymorphic_id" integer, "threaded_comment_polymorphic_type" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM "schema_migrations"[0m
+  [4;36;1mExtendActiverecordTest::Book Create (0.4ms)[0m   [0;1mINSERT INTO "books" ("title", "content") VALUES('This is a test title', 'Wow! This item has some content!')[0m
+  [4;35;1mThreadedComment Create (0.5ms)[0m   [0mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES('Test Commenter', 0, 0, '2010-04-10 23:13:54', 'This the medium size comment body...', 'ExtendActiverecordTest::Book', 't', 1, 0, 'test@example.com', '2010-04-10 23:13:54')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSELECT count(*) AS count_all FROM "threaded_comments" WHERE ("threaded_comments".threaded_comment_polymorphic_id = 1 AND "threaded_comments".threaded_comment_polymorphic_type = 'ExtendActiverecordTest::Book') [0m
+  [4;35;1mExtendActiverecordTest::Book Create (0.3ms)[0m   [0mINSERT INTO "books" ("title", "content") VALUES('This is a test title', 'Wow! This item has some content!')[0m
+  [4;36;1mExtendActiverecordTest::Article Create (0.4ms)[0m   [0;1mINSERT INTO "articles" ("title", "content") VALUES('This is a test title', 'Wow! This item has some content!')[0m
+  [4;35;1mHasThreadedCommentsTest::Book Create (0.4ms)[0m   [0mINSERT INTO "books" ("title", "content") VALUES(NULL, NULL)[0m
+  [4;36;1mHasThreadedCommentsTest::Article Create (0.4ms)[0m   [0;1mINSERT INTO "articles" ("title", "content") VALUES(NULL, NULL)[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;36;1mThreadedComment Create (0.4ms)[0m   [0;1mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES('Test Commenter', 0, 0, '2010-04-10 23:13:54', 'This is a medium sized sample comment!', 'Book', 't', 1, 0, 'test@example.com', '2010-04-10 23:13:54')[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;35;1mThreadedComment Create (0.4ms)[0m   [0mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES('Test Commenter', 0, 0, '2010-04-10 23:13:54', 'This the medium size comment body...', 'Book', 't', 1, 0, 'test@example.com', '2010-04-10 23:13:54')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;36;1mThreadedComment Create (0.4ms)[0m   [0;1mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES('Test Commenter', 0, 0, '2010-04-10 23:13:54', 'Is this a suitable sample comment?', 'Book', 't', 1, 0, 'test@example.com', '2010-04-10 23:13:54')[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;35;1mThreadedComment Create (0.4ms)[0m   [0mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES('Test Commenter', 0, 0, '2010-04-10 23:13:54', 'This the medium size comment body...', 'Book', 't', 1, 0, 'asasdasdas', '2010-04-10 23:13:54')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;35;1mThreadedComment Create (0.4ms)[0m   [0mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES('Test Commenter', 0, 0, '2010-04-10 23:13:54', NULL, 'Book', 't', 1, 0, 'test@example.com', '2010-04-10 23:13:54')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;35;1mThreadedComment Create (0.4ms)[0m   [0mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES('Test Commenter', 0, 0, '2010-04-10 23:13:54', 'This the medium size comment body...', 'Book', 't', 1, 0, NULL, '2010-04-10 23:13:54')[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;35;1mThreadedComment Create (0.4ms)[0m   [0mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES(NULL, 0, 0, '2010-04-10 23:13:54', 'This the medium size comment body...', 'Book', 't', 1, 0, 'test@example.com', '2010-04-10 23:13:54')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;35;1mThreadedComment Create (0.4ms)[0m   [0mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES('Test Commenter', 0, 0, '2010-04-10 23:13:54', 'This the medium size comment body...', 'Book', 't', 1, NULL, 'test@example.com', '2010-04-10 23:13:54')[0m
+  [4;36;1mThreadedComment Load (0.6ms)[0m   [0;1mSELECT * FROM "threaded_comments" WHERE ("threaded_comments"."id" = 9) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;36;1mThreadedComment Create (0.4ms)[0m   [0;1mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES('Test Commenter', 0, 0, '2010-04-10 23:13:54', 'This the medium size comment body...', 'Book', 't', 1, 0, 'test@example.com', '2010-04-10 23:13:54')[0m
+  [4;35;1mThreadedComment Load (0.4ms)[0m   [0mSELECT * FROM "threaded_comments" WHERE ("threaded_comments"."id" = 10) [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;36;1mThreadedComment Create (0.4ms)[0m   [0;1mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES('Test Commenter', 0, 0, '2010-04-10 23:13:54', 'This is a very simple test comment.', 'Book', 't', 1, 0, 'test@example.com', '2010-04-10 23:13:54')[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;35;1mThreadedComment Create (0.4ms)[0m   [0mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES('Gah!', 0, 0, '2010-04-10 23:13:54', 'Supercalifragilisticexpialadocious: a super long word!', 'Book', 't', 1, 0, 'test@example.com', '2010-04-10 23:13:54')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;36;1mThreadedComment Create (0.4ms)[0m   [0;1mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES('Blah Comment', 0, 0, '2010-04-10 23:13:54', 'How many words can I think of that don''t contain an "e"?', 'Book', 't', 1, 0, 'test@example.com', '2010-04-10 23:13:54')[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;35;1mThreadedComment Create (0.4ms)[0m   [0mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES('Captain Comment', 0, 0, '2010-04-10 23:13:54', 'WHAT?! You mean to tell *ME* that SONY/ERICSSON *CAN''T* make a phone?', 'Book', 't', 1, 0, 'test@example.com', '2010-04-10 23:13:54')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;36;1mThreadedComment Create (0.4ms)[0m   [0;1mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES('Captain Comment2', 0, 0, '2010-04-10 23:13:54', 'WHAT?! YOU MEAN TO TELL ME that SONY/ERICSSON *CAN''T* make a phone?', 'Book', 't', 1, 0, 'test@example.com', '2010-04-10 23:13:54')[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;35;1mThreadedComment Create (0.4ms)[0m   [0mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES('Lolburger', 0, 0, '2010-04-10 23:13:54', 'ROFL! Who do I have to shag to get a comment around here?', 'Book', 't', 1, 0, 'test@example.com', '2010-04-10 23:13:54')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;36;1mThreadedComment Create (0.4ms)[0m   [0;1mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES('Just ''Cause', 0, 0, '2010-04-10 23:13:54', 'I''m a Klingon. It''s kind of my thing to be angry for almost no good reason. Yesterday I tore the door off my fridge cause I was out of margarine. These things happen.', 'Book', 't', 1, 0, 'test@example.com', '2010-04-10 23:13:54')[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;35;1mThreadedComment Create (0.4ms)[0m   [0mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES('Test Commenter', 0, 0, '2010-04-10 23:13:54', 'this comment has absolutely no capitalization.', 'Book', 't', 1, 0, 'test@example.com', '2010-04-10 23:13:54')[0m
+  [4;36;1mThreadedComment Create (0.4ms)[0m   [0;1mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES('Test Commenter', 0, 0, '2010-04-10 23:13:54', 'This the medium size comment body...', 'Book', 't', 1, 0, 'test@example.com', '2010-04-10 23:13:54')[0m
+  [4;35;1mThreadedComment Create (0.5ms)[0m   [0mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES('Test Commenter', 0, 0, '2010-04-10 23:13:54', 'This the medium size comment body...', 'Book', 't', 1, 0, 'test@example.com', '2010-04-10 23:13:54')[0m
+  [4;36;1mThreadedComment Load (0.5ms)[0m   [0;1mSELECT * FROM "threaded_comments" WHERE ("threaded_comments"."id" = 20) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT count(*) AS count_all FROM "threaded_comments" WHERE (threaded_comment_polymorphic_id = 1 AND threaded_comment_polymorphic_type = 'Book') [0m
+  [4;36;1mThreadedComment Create (0.3ms)[0m   [0;1mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES('Test Commenter', 0, 0, '2010-04-10 23:13:54', 'This the medium size comment body...', NULL, 't', NULL, 20, 'test@example.com', '2010-04-10 23:13:54')[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSELECT count(*) AS count_all FROM "threaded_comments" WHERE (threaded_comment_polymorphic_id = 1 AND threaded_comment_polymorphic_type = 'Book') [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;35;1mThreadedComment Create (0.4ms)[0m   [0mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES('Test Commenter', 0, 20, '2010-04-10 23:13:54', 'This the medium size comment body...', 'Book', 't', 1, 0, 'test@example.com', '2010-04-10 23:13:54')[0m
+  [4;36;1mThreadedComment Load (0.4ms)[0m   [0;1mSELECT * FROM "threaded_comments" WHERE ("threaded_comments"."id" = 22) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT count(*) AS count_all FROM "threaded_comments" [0m
+  [4;36;1mThreadedComment Create (0.4ms)[0m   [0;1mINSERT INTO "threaded_comments" ("name", "rating", "flags", "updated_at", "body", "threaded_comment_polymorphic_type", "notifications", "threaded_comment_polymorphic_id", "parent_id", "email", "created_at") VALUES('Test Commenter', 20, 0, '2010-04-10 23:13:54', 'This the medium size comment body...', 'Book', 't', 1, 0, 'test@example.com', '2010-04-10 23:13:54')[0m
+  [4;35;1mThreadedComment Load (0.4ms)[0m   [0mSELECT * FROM "threaded_comments" WHERE ("threaded_comments"."id" = 23) [0m
