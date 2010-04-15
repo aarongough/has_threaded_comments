@@ -56,13 +56,13 @@ class ThreadedCommentsController < ActionController::Base
   
   # GET /threaded-comments/1/remove-notifications
   def remove_notifications
-    @message = "The comment you are looking for has been removed or is incorrect." and render :action => 'remove_email' and return unless( ThreadedComment.exists?(params[:id]))
+    @message = "The comment you are looking for has been removed or is incorrect." and render :action => 'remove_notifications' and return unless( ThreadedComment.exists?(params[:id]))
     @comment = ThreadedComment.find(params[:id])
-    @message = "The information you provided does not match this comment." and render :action => 'remove_email' and return unless( params[:hash] == "#{@comment.email}-#{@comment.created_at}".hash.to_s(16) )
+    @message = "The information you provided does not match this comment." and render :action => 'remove_notifications' and return unless( params[:hash] == "#{@comment.email}-#{@comment.created_at}".hash.to_s(16) )
     @message = "Thank-you. Your email (#{@comment.email}) has been removed."
     @comment.notifications = false
     @comment.save
-    render :action => 'remove_email'
+    render :action => 'remove_notifications'
   end
   
   private

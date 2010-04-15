@@ -1,0 +1,29 @@
+<div class="new_comment_form" id="new_comment_<%= timestamp -%>">
+<% remote_form_for( comment, :update => 'new_comment_' + timestamp ) do |f| %>
+  <%= f.error_messages %>
+  
+  <p id="new_email_input">
+    <%= label_tag "threaded_comment[#{honeypot_name}]", 'Do not provide this unless you are a robot!' %><br />
+    <%= text_field_tag "threaded_comment[#{honeypot_name}]" %>
+  </p>
+  
+  <p id="new_comment_name">
+    <%= f.label :name, name_label, :class => 'comment_name_label' -%>
+    <%= f.text_field :name, :class => 'comment_name' %>
+  </p>
+  
+  <p id="new_comment_email">
+    <%= f.label :email, email_label, :class => 'comment_email_label' -%>
+    <%= f.text_field :email, :class => 'comment_email' %>
+  </p>
+  
+  <p id="new_comment_body">
+    <%= f.label :body, body_label, :class => "comment_body_label" -%>
+    <%= f.text_area :body %>
+  </p>
+  
+  <p id="new_comment_submit">
+    <%= f.submit submit_title %>
+  </p>
+<% end %>         
+</div>

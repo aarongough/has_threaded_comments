@@ -1,4 +1,4 @@
-module ApplicationHelper
+module ThreadedCommentsHelper
 
   def render_threaded_comments(*configuration)
     default_configuration = {
@@ -14,9 +14,9 @@ module ApplicationHelper
       :reply_text => "Reply"
     }
     
-    return unless(configuration.first.is_a(Array))
+    return unless(configuration.first.is_a?(Array))
     comments = configuration.first
-    if(configuration.last.is_a(Hash))
+    if(configuration.last.is_a?(Hash))
       config = default_configuration.merge(configuration.last)
     else
       config = default_configuration
@@ -27,7 +27,7 @@ module ApplicationHelper
     ret = ''
     this_indent = "  " * (config[:base_indent] + config[:indent_level])
     
-    comments[parent_id].each do |comment|
+    comments[config[:parent_id]].each do |comment|
       ret << this_indent << "<a name=\"comment_#{comment.id}\" />\n"
       ret << this_indent << "<div class=\"comment_container\">\n"
       ret << this_indent << "  <div class=\"comment_container_header\">\n"
@@ -55,7 +55,7 @@ module ApplicationHelper
       ret << this_indent << "</div>\n"
       
       ret << this_indent << "<div class=\"subcomment_container\">\n"
-      ret << render_threaded_comments( comments, config.merge({:parent_id => comment.id, :indent_level = config[:indent_level] + 1, :sorted => true })) unless( comments[comment.id].nil? )
+      ret << render_threaded_comments( comments, config.merge({:parent_id => comment.id, :indent_level => config[:indent_level] + 1, :sorted => true })) unless( comments[comment.id].nil? )
       ret << this_indent << "</div>\n"
     end
     return ret
@@ -68,6 +68,29 @@ module ApplicationHelper
       bucketed_comments[comment.parent_id] << comment
     end
     return bucketed_comments
+  end
+  
+  def render_comment_form(*configuration)
+    return unless(configuration.first.is_a?(ThreadedComment))
+  
+    default_configuration = {
+      :partial => 'threaded_comments/comment_form',
+      :name_label => '<strong>Name</strong><br />',
+      :email_label => '<strong>Email</strong> (so we can notify you when someone replies to your comment)<br />You may opt-out at any time. Your email address will not be made public or shared in any way. <br />',
+      :body_label => '2000 characters max. HTML is not allowed.<br />Eloquent writing, correct spelling and proper punctuation are strongly encouraged.<br />',
+      :submit_title => 'Add Comment',
+      :honeypot_name => 'confirm_email',
+      :timestamp => Time.now.to_i.to_s,
+      :comment => configuration.first
+    }
+    
+    if(configuration.last.is_a?(Hash))
+      config = default_configuration.merge(configuration.last)
+    else
+      config = default_configuration
+    end
+    
+    render :partial => config[:partial], :locals => config
   end
 
 end
