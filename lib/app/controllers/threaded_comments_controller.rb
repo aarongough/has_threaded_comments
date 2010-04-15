@@ -1,5 +1,7 @@
 class ThreadedCommentsController < ActionController::Base
 
+  before_filter :was_action_already_performed, :only => [:flag, :upmod, :downmod]
+
   # GET /threaded-comments
   def new
     @comment = ThreadedComment.new(params[:threaded_comment])
@@ -10,10 +12,10 @@ class ThreadedCommentsController < ActionController::Base
 
   # POST /threaded-comments
   def create
-    head :status => :failure and return if check_honeypot( 'comment' )
-    if( params[:threaded_comment][:parent_id] != 0 && !Comment.exists?(params[:threaded_comment][:parent_id]))
+    head :status => :bad_request and return if check_honeypot( 'threaded_comment' )
+    if( !params[:threaded_comment][:parent_id].nil? && params[:threaded_comment][:parent_id] > 0 && !ThreadedComment.exists?(params[:threaded_comment][:parent_id]))
       flash[:notice] = "The comment you were trying to comment on no longer exists."
-      head :status => :failure and return
+      head :status => :bad_request and return
     end
     @comment = ThreadedComment.new(params[:threaded_comment])
     if( @comment.save )
@@ -21,30 +23,33 @@ class ThreadedCommentsController < ActionController::Base
       session[:email] = @comment.email
       render :action => 'show', :layout => false
     else
-      render :action => 'new', :layout => false, :status => :failure
+      render :action => 'new', :layout => false, :status => :bad_request
     end
   end
   
   # POST /threaded-comments/1/upmod
   def upmod
-    if( ThreadedComment.exists?(params[:id]) && @comment = ThreadedComment.find(params[:id]) && @comment.increment!('rating'))
-      render :text => @comment.rating.to_s and return
+    if( ThreadedComment.exists?(params[:id]) )
+      @comment = ThreadedComment.find(params[:id])
+      render :text => @comment.rating.to_s and return if(@comment.increment!('rating'))
     end
     head :bad_request
   end
   
   # POST /threaded-comments/1/downmod
   def downmod
-    if( ThreadedComment.exists?(params[:id]) && @comment = ThreadedComment.find(params[:id]) && @comment.decrement!('rating'))
-      render :text => @comment.rating.to_s and return
+    if( ThreadedComment.exists?(params[:id]) )
+      @comment = ThreadedComment.find(params[:id])
+      render :text => @comment.rating.to_s and return if(@comment.decrement!('rating'))
     end
     head :bad_request
   end
   
   # POST /threaded-comments/1/flag
   def flag
-    if( ThreadedComment.exists?(params[:id]) && @comment = ThreadedComment.find(params[:id]) && @comment.increment!('flags'))
-      render :text => "Thanks!" and return
+    if( ThreadedComment.exists?(params[:id]) )
+      @comment = ThreadedComment.find(params[:id])
+      render :text => "Thanks!" and return if(@comment.increment!('flags'))
     end
     head :bad_request
   end
@@ -62,18 +67,17 @@ class ThreadedCommentsController < ActionController::Base
   
   private
   
-    def action_already_performed?
-      if( !session["/threaded-comments/#{params[:id]}/#{params[:action]}"].nil? )
-        return true
-      else
+    def was_action_already_performed
+      if( session["/threaded-comments/#{params[:id]}/#{params[:action]}"].nil? )
         session["/threaded-comments/#{params[:id]}/#{params[:action]}"] = true
-        return false
+      else
+        head :status => :bad_request and return
       end
     end
     
     def check_honeypot( form_name, honeypot = "confirm_email" )
       unless( params[form_name][honeypot].nil? || (params[form_name][honeypot].length == 0) )
-        redirect_to "/" and return true
+        return true
       end
       params[form_name].delete( honeypot )
       return false

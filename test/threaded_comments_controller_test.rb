@@ -15,11 +15,12 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
     @response = ActionController::TestResponse.new 
     
     ActionController::Routing::Routes.draw do |map| 
-      map.flag_threaded_comment          '/threaded-comments/:id/flag', :controller => 'threaded_comments', :action => 'flag', :conditions => { :method => :post }
-      map.upmod_threaded_comment         '/threaded-comments/:id/upmod', :controller => 'threaded_comments', :action => 'upmod', :conditions => { :method => :post }
-      map.downmod_threaded_comment       '/threaded-comments/:id/downmod', :controller => 'threaded_comments', :action => 'downmod', :conditions => { :method => :post }
-      map.create_threaded_comment        '/threaded-comments', :controller => 'threaded_comments', :action => 'create', :conditions => { :method => :post }
-      map.remove_threaded_comment_email  '/threaded-comments/:id/remove-email/:hash', :controller => 'threaded_comments', :action => 'remove_email' 
+      map.flag_threaded_comment                   '/threaded-comments/:id/flag', :controller => 'threaded_comments', :action => 'flag', :conditions => { :method => :post }
+      map.upmod_threaded_comment                  '/threaded-comments/:id/upmod', :controller => 'threaded_comments', :action => 'upmod', :conditions => { :method => :post }
+      map.downmod_threaded_comment                '/threaded-comments/:id/downmod', :controller => 'threaded_comments', :action => 'downmod', :conditions => { :method => :post }
+      map.create_threaded_comment                 '/threaded-comments', :controller => 'threaded_comments', :action => 'create', :conditions => { :method => :post }
+      map.new_threaded_comment                    '/threaded-comments', :controller => 'threaded_comments', :action => 'new', :conditions => { :method => :get }
+      map.remove_threaded_comment_notifications   '/threaded-comments/:id/remove-notifications/:hash', :controller => 'threaded_comments', :action => 'remove_notifications' 
     end  
     
     @sample_comment = {
@@ -30,8 +31,12 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
       :threaded_comment_polymorphic_type => 'Book'
     }
     
+    ThreadedComment.create(@sample_comment)
+  end
+  
+  def test_should_create_comment
     @expected_comment_count = ThreadedComment.count + 1
-    post :create, :threaded_comment => @sample_comment
+    put :create, :threaded_comment => @sample_comment
     assert_response :success
     assert_equal @expected_comment_count, ThreadedComment.count
   end
@@ -40,7 +45,7 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
     assert_no_difference('ThreadedComment.count') do
       put :create, :threaded_comment => @sample_comment.merge({:confirm_email => "test@example.com"})
     end
-    assert_response :failure
+    assert_response :bad_request
   end
   
   def test_new
@@ -85,12 +90,11 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
     @actions.each do |action|
       assert_difference("ThreadedComment.find(1).#{action[:field]}", action[:difference], "Action failed first time: #{action[:action]}") do
         put action[:action], :id => 1
-        assert_redirected_to rant_path(Comment.find(1).rant)
+        assert_response :success
       end 
       assert_no_difference( "ThreadedComment.find(1).#{action[:field]}", "Action succeeded when it should have failed: #{action[:action]}") do
-        session[:last_url] = rant_path(Comment.find(1).rant)
         put action[:action], :id => 1
-        assert_response :success
+        assert_response :bad_request
       end
     end
   end
