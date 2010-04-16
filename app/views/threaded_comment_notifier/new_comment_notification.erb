@@ -1,0 +1,9 @@
+<%= h @comment.name %> created the following comment:
+
+Name: <%= h @comment.name %>
+Email: <%= h @comment.email %>
+
+<%= h @comment.body %>
+
+See just the comment:<%= comment_comment_url( @comment, :host => APP_CONFIG['app_domain'] ) %>
+See the comment in it's original context: <%= title_url( @comment.title, :host => APP_CONFIG['app_domain'] ) %>

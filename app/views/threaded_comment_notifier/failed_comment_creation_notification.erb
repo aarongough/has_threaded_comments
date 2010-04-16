@@ -1,0 +1,8 @@
+A user tried to create a comment and encountered the following errors:
+
+* <%= @comment.errors.full_messages.join("\n* ") %>
+
+Name: <%= h @comment.name %>
+Email: <%= h @comment.email %>
+
+<%= h @comment.body %>

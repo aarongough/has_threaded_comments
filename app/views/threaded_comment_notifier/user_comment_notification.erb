@@ -1,0 +1,20 @@
+<%= "#{@comment.name} has commented on your title: "if( @comment.parent_id == 0 ) -%>
+<%= "#{@comment.name} has replied to your comment: "if( @comment.parent_id != 0 ) -%>
+
+
+"<%= h( @comment.body ) %>"
+
+
+To see the original title and all it's comments:
+<%= title_url( @comment.title, :host => 'whyiamangry.com' ) %>
+
+To reply directly to this comment:
+<%= comment_comment_url( @comment, :host => 'whyiamangry.com' ) %>
+
+-----------
+Please visit the link below if you don't want to receive further notifications about this title/comment:
+<%= remove_title_email_url( :id => @comment.title.id, :hash => @comment.title.email_hash, :host => APP_CONFIG['app_domain']) if( @comment.parent_id == 0 ) -%>
+<%= remove_comment_email_url( :id => @parent_comment.id, :hash => @parent_comment.email_hash, :host => APP_CONFIG['app_domain']) if( @comment.parent_id != 0 ) -%>
+
+
+Please do not respond to this email, this email address is not monitored.
