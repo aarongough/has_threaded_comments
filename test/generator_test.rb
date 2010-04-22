@@ -17,21 +17,21 @@ class GeneratorTest < Test::Unit::TestCase
   
   def test_generates_threaded_comments_config
     @original_files = file_list('config')
-    Rails::Generator::Scripts::Generate.new.run(["install_has_threaded_comments"], :destination => fake_rails_root)  
+    Rails::Generator::Scripts::Generate.new.run(["install_has_threaded_comments"], :destination => fake_rails_root, :quiet => true)  
     new_file = (file_list('config') - @original_files).first 
     assert_equal "threaded_comments_config.yml", File.basename(new_file)  
   end
   
   def test_generates_threaded_comments_migration
     @original_files = file_list('db', 'migrate')
-    Rails::Generator::Scripts::Generate.new.run(["install_has_threaded_comments"], :destination => fake_rails_root)  
+    Rails::Generator::Scripts::Generate.new.run(["install_has_threaded_comments"], :destination => fake_rails_root, :quiet => true)  
     new_file = (file_list('db', 'migrate') - @original_files).first 
     assert new_file.index('create_threaded_comments')  
   end
   
   def test_generates_threaded_comments_styles_stylesheet
     @original_files = file_list('public', 'stylesheets')
-    Rails::Generator::Scripts::Generate.new.run(["install_has_threaded_comments"], :destination => fake_rails_root)  
+    Rails::Generator::Scripts::Generate.new.run(["install_has_threaded_comments"], :destination => fake_rails_root, :quiet => true)  
     new_file = (file_list('public', 'stylesheets') - @original_files).first 
     assert_equal "threaded_comment_styles.css", File.basename(new_file)    
   end 

@@ -32,4 +32,21 @@ def load_schema
   ActiveRecord::Base.establish_connection(config[db_adapter])  
   load(File.dirname(__FILE__) + "/schema.rb")  
   require File.dirname(__FILE__) + '/../rails/init.rb' 
+end
+
+load_schema
+
+class Book < ActiveRecord::Base 
+  has_threaded_comments
+end 
+
+class Article < ActiveRecord::Base 
+  has_threaded_comments
+end
+
+Book.create()
+Article.create()
+
+ActionController::Routing::Routes.draw do |map| 
+  map.resources :books, :articles
 end 

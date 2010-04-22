@@ -1,14 +1,13 @@
 require File.dirname(__FILE__) + '/test_helper.rb' 
 
 class ThreadedCommentTest < Test::Unit::TestCase 
-  load_schema 
   
   def setup
     @sample_comment = {
       :name => 'Test Commenter', 
       :body => 'This the medium size comment body...', 
       :email => "test@example.com", 
-      :threaded_comment_polymorphic_id => 1, 
+      :threaded_comment_polymorphic_id => 0, 
       :threaded_comment_polymorphic_type => 'Book'
     }
   end

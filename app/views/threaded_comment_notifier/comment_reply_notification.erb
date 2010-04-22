@@ -1,0 +1,17 @@
+<%= "#{@comment.name} has commented on your #{@comment.class.table_name.singularize}: " if( @comment.parent_id == 0 ) -%>
+<%= "#{@comment.name} has replied to your comment: " if( @comment.parent_id != 0 ) -%>
+
+
+"<%= h( @comment.body ) %>"
+
+
+To see the original <%= @comment.class.table_name.singularize -%> and all it's comments:
+
+To reply directly to this comment:
+
+-----------
+Please click the link below if you don't want to receive further notifications about this comment:
+<%= remove_threaded_comment_notifications_url( :id => @parent_comment.id, :hash => @parent_comment.email_hash, :host => THREADED_COMMENTS_CONFIG["site_domain"]) if( @comment.parent_id != 0 ) -%>
+
+
+Please do not respond to this email, this email address is not monitored.

@@ -1,15 +1,6 @@
 require File.dirname(__FILE__) + '/test_helper.rb' 
 
 class ExtendActiverecordTest < Test::Unit::TestCase 
-  load_schema 
-  
-  class Book < ActiveRecord::Base 
-    has_threaded_comments
-  end 
-  
-  class Article < ActiveRecord::Base 
-    has_threaded_comments
-  end
   
   def setup
     @sample_book = @sample_article = {
@@ -21,7 +12,7 @@ class ExtendActiverecordTest < Test::Unit::TestCase
       :name => 'Test Commenter', 
       :body => 'This the medium size comment body...', 
       :email => "test@example.com", 
-      :threaded_comment_polymorphic_id => 1, 
+      :threaded_comment_polymorphic_id => 0, 
       :threaded_comment_polymorphic_type => 'Book'
     }
   end

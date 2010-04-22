@@ -1,14 +1,13 @@
 require File.dirname(__FILE__) + '/test_helper.rb' 
 
 class ThreadedCommentNotifierTest < ActionMailer::TestCase
-  load_schema
 
   def setup
     @sample_comment = {
       :name => 'Test Commenter', 
       :body => 'This the medium size comment body...', 
       :email => "test@example.com", 
-      :threaded_comment_polymorphic_id => 1, 
+      :threaded_comment_polymorphic_id => 0, 
       :threaded_comment_polymorphic_type => 'Book'
     }
     
@@ -31,7 +30,7 @@ class ThreadedCommentNotifierTest < ActionMailer::TestCase
   test "should send user comment reply notification" do
     comment = ThreadedComment.find(1)
     assert_difference("ActionMailer::Base.deliveries.length", 1) do
-      @email = ThreadedCommentNotifier.deliver_comment_reply_notification( comment.email, comment )
+      @email = ThreadedCommentNotifier.deliver_comment_reply_notification( 'test@test.com', comment )
     end
     assert_equal [THREADED_COMMENTS_CONFIG["system_send_email_address"]], @email.from
     assert @email.body.index( comment.body ), "Email did not include comment body"
