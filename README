@@ -79,7 +79,7 @@ Then follow these steps to use the comment system in your application:
     11: def show
     12:   if( Book.exists?(params[:id])) 
 ->  13:   @book = Book.find(params[:id], :include => {:comments => []})
-->  14:   @new_comment = Book.comments.new(:name => session[:name], :email => session[:email])                             
+->  14:   @new_comment = @book.comments.new(:name => session[:name], :email => session[:email])                             
     15: end
 
 4) Add the code for rendering the comments and the new comment form to your 'show' view
