@@ -9,11 +9,20 @@ class ThreadedCommentsController < ActionController::Base
     @comment.email = session[:email] unless( session[:email].nil? )
     render :layout => false
   end
+  
+  # GET /threaded-comments/1
+  def show
+    if(ThreadedComment.exists?(params[:id]))
+      @comment = ThreadedComment.find(params[:id])
+      render :layout => false and return
+    end
+    head :bad_request
+  end
 
   # POST /threaded-comments
   def create
     head :status => :bad_request and return if check_honeypot( 'threaded_comment' )
-    if( !params[:threaded_comment][:parent_id].nil? && params[:threaded_comment][:parent_id] > 0 && !ThreadedComment.exists?(params[:threaded_comment][:parent_id]))
+    if( !params[:threaded_comment][:parent_id].nil? && params[:threaded_comment][:parent_id].to_i > 0 && !ThreadedComment.exists?(params[:threaded_comment][:parent_id]))
       flash[:notice] = "The comment you were trying to comment on no longer exists."
       head :status => :bad_request and return
     end

@@ -1,29 +1,33 @@
-<div class="new_comment_form" id="new_comment_<%= timestamp -%>">
-<% remote_form_for( comment, :update => 'new_comment_' + timestamp ) do |f| %>
+<div class="new_threaded_comment_form" id="new_threaded_comment_<%= timestamp -%>">
+<% remote_form_for( comment, :url => {:controller => "threaded_comments", :action => "create"}, :update => 'new_threaded_comment_' + timestamp ) do |f| %>
   <%= f.error_messages %>
   
-  <p id="new_email_input">
+  <%= f.hidden_field :threaded_comment_polymorphic_id -%>
+  <%= f.hidden_field :threaded_comment_polymorphic_type -%>
+  <%= f.hidden_field :parent_id -%>
+  
+  <p class="new_threaded_comment_email_confirm">
     <%= label_tag "threaded_comment[#{honeypot_name}]", 'Do not provide this unless you are a robot!' %><br />
     <%= text_field_tag "threaded_comment[#{honeypot_name}]" %>
   </p>
   
-  <p id="new_comment_name">
+  <p class="new_threaded_comment_name">
     <%= f.label :name, name_label, :class => 'comment_name_label' -%>
-    <%= f.text_field :name, :class => 'comment_name' %>
+    <%= f.text_field :name, :class => 'threaded_comment_name_input' %>
   </p>
   
-  <p id="new_comment_email">
+  <p class="new_threaded_comment_email">
     <%= f.label :email, email_label, :class => 'comment_email_label' -%>
-    <%= f.text_field :email, :class => 'comment_email' %>
+    <%= f.text_field :email, :class => 'threaded_comment_email_input' %>
   </p>
   
-  <p id="new_comment_body">
+  <p class="new_threaded_comment_body">
     <%= f.label :body, body_label, :class => "comment_body_label" -%>
-    <%= f.text_area :body %>
+    <%= f.text_area :body, :class => 'threaded_comment_body_input' %>
   </p>
   
-  <p id="new_comment_submit">
-    <%= f.submit submit_title %>
+  <p class="new_threaded_comment_submit">
+    <%= f.submit submit_title, :class => 'threaded_comment_submit_input' %>
   </p>
 <% end %>         
 </div>

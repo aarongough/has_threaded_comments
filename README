@@ -1,13 +1,119 @@
-HasThreadedComments
-===================
+has_threaded_comments
+=====================
 
-Introduction goes here.
+has_threaded_comments is a Rails Engine that provides an entire threaded commenting
+system with the addition of only a few lines of code to your application. The commenting
+system include support for rating and flagging of comments as well as automatically
+generating email notifications (for both users and website admin) of replies to comments.
+
+has_threaded_comments does not require the user be logged in to create a comment, in 
+keeping with the idea of keeping the barrier to entry as low as possible. It uses 
+reverse captchas (honeypots) to foil spambots.
+
+Additionally has_threaded_comments will use validates_text_content to provide automatic
+content moderation if the validates_text_content plugin has been installed.
+  (https://aarongough.devguard.com/sv/plugins/validates_text_content)
+  
+If you find an issue with this plugin please contact me at: aaron@aarongough.com
+(Preferably with a patch that provides a failing test case highlighting your issue)
+
+Interfaces
+==========
+
+has_threaded_comments makes the following interfaces available to your application:
+
+Models:
+    ThreadedComment
+    ThreadedCommentObserver
+    ThreadedCommentNotifier
+
+Controllers:
+    ThreadedCommentsController
+
+Helpers:
+    render_threaded_comments
+    render_comment_form
+
+Routes:
+    /threaded-comments/:id/flag
+    /threaded-comments/:id/upmod
+    /threaded-comments/:id/downmod
+    /threaded-comments
+    /threaded-comments
+    /threaded-comments/:id/remove-notifications/:hash
 
 
-Example
-=======
+Generated Files
+===============
+When has_threaded_comments is fully installed it adds the following files to your application:
 
-Example goes here.
+    config/threaded_comments_connfig.yml
+    db/migrate/xxxxxxxxxxxxxx_create_threaded_comments.rb
+    public/stylesheets/threaded_comment_styles.css
+    public/has-threaded-comments-images/downmod-arrow.gif
+    public/has-threaded-comments-images/upmod-arrow.gif
 
 
-Copyright (c) 2010 [name of plugin creator], released under the MIT license
+Installation
+============
+To install has_threaded_comments you need to run the install_has_threaded_comments generator like so:
+
+    ./script/generate install_has_threaded_comments
+
+Then follow these steps to use the comment system in your application:
+
+1) Run the generated database migration
+
+    rake db:migrate
+
+2) Add the has_threaded_comments declaration to your model(s)
+
+    1: # app/models/book.rb
+    2: class Book < ActiveRecord::Base
+->  3:   has_threaded_comments
+    4: end
+
+3) Add the code for eager-loading comments and generating a blank comment to your controller(s)
+
+    10: # GET /books/1
+    11: def show
+    12:   if( Book.exists?(params[:id])) 
+->  13:   @book = Book.find(params[:id], :include => {:comments => []})
+->  14:   @new_comment = Book.comments.new(:name => session[:name], :email => session[:email])                             
+    15: end
+
+4) Add the code for rendering the comments and the new comment form to your 'show' view
+
+    1: # app/views/book/show.html.erb
+    2: <h1><%= @book.title -%></h1>
+    3: <p><%= @book.content -%></p>
+    4:
+->  5: <%= render_comment_form(@new_comment) -%>
+->  6: <%= render_threaded_comments(@book.comments) -%>
+  
+5) Add threaded_comment_styles.css and prototype.js to your layout
+  
+    1: <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    2: <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    3:   <head>
+->  4:     <%= javascript_include_tag 'prototype' -%>
+->  5:     <%= stylesheet_link_tag 'threaded_comment_styles' -%>
+    6:   </head>
+  
+6) Configure the settings in config/threaded_comments_config.yml according to the needs of your application, eg:
+
+    1:  production:
+    2:    site_domain:                      example.com
+    3:    admin_email:                      admin@example.com
+    4:    system_send_email_address:        noreply@example.com
+    5:    flag_threshold:                   3
+    6:    new_comment_subject:              Example.com - New comment
+    7:    failed_comment_creation_subject:  Example.com - Failed comment creation
+    8:    comment_reply_subject:            Example.com - {name} has replied to your comment
+    9:    
+    10:   enable_notifications: true
+    11:   enable_comment_creation_failure_notifications: true
+    
+7) Enjoy!
+
+Copyright (c) 2010 Aaron Gough (http://thingsaaronmade.com/), released under the MIT license

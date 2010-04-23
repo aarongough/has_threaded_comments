@@ -25,11 +25,47 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
     ThreadedComment.create(@sample_comment)
   end
   
+  def test_show
+    @test_comment = ThreadedComment.new(@sample_comment.merge({:parent_id => 0}))
+    @test_comment.save
+    get :show, :id => @test_comment.id
+    assert_response :success, @response.body
+    assert_not_nil assigns(:comment)
+    assert @response.body.index(@test_comment.name), "Did not include comment name"
+    assert @response.body.index(@test_comment.body), "Did not include comment body"
+    assert @response.body.index(upmod_threaded_comment_path(@test_comment)), "Did not include link to upmod"
+    assert @response.body.index(downmod_threaded_comment_path(@test_comment)), "Did not include link to downmod"
+    assert @response.body.index(flag_threaded_comment_path(@test_comment)), "Did not include link to flag"
+    assert @response.body.index(new_threaded_comment_path), "Did not include link to new"
+  end
+  
+  def test_should_not_show_comments_with_flags_greater_than_flag_threshold
+    @test_comment = ThreadedComment.new(@sample_comment.merge({:name => "Flagged Commenter"}))
+    @test_comment.flags = 99999999
+    @test_comment.save
+    get :show, :id => @test_comment.id
+    assert_response :success, @response.body
+    assert_not_nil assigns(:comment)
+    assert_nil @response.body.index(@test_comment.name), "Should not include comment name"
+    assert_nil @response.body.index(@test_comment.body), "Should not include comment body"
+  end
+  
   def test_should_create_comment
     @expected_comment_count = ThreadedComment.count + 1
     put :create, :threaded_comment => @sample_comment
     assert_response :success
     assert_equal @expected_comment_count, ThreadedComment.count
+    assert @response.body.index(@sample_comment[:name]), "Did not include comment name"
+    assert @response.body.index(@sample_comment[:body]), "Did not include comment body"
+  end
+  
+  def test_should_create_subcomment
+    @expected_comment_count = ThreadedComment.count + 1
+    put :create, :threaded_comment => @sample_comment.merge({:parent_id => "2"})
+    assert_response :success
+    assert_equal @expected_comment_count, ThreadedComment.count
+    assert @response.body.index(@sample_comment[:name]), "Did not include comment name"
+    assert @response.body.index(@sample_comment[:body]), "Did not include comment body"
   end
   
   def test_should_not_create_comment_if_negative_captcha_is_filled
@@ -42,11 +78,22 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
   def test_new
     session[:name] = "Test Name"
     session[:email] = "Test Name"
-    get :new, :threaded_comment => @sample_comment.merge({:name => nil, :email => nil})
+    @test_comment = @sample_comment.merge({:name => nil, :email => nil, :parent_id => "2"})
+    get :new, :threaded_comment => @test_comment
     assert_response :success
     assert_not_nil assigns(:comment)
     assert @response.body.index(session[:name]), "Response body did not include commenter name"
     assert @response.body.index(session[:email]), "Response body did not include commenter email"
+    assert @response.body.index(@test_comment[:body]), "Response body did not include body"
+    assert @response.body.index(@test_comment[:threaded_comment_polymorphic_id].to_s), "Response body did not include threaded_comment_polymorphic_id"
+    assert @response.body.index(@test_comment[:threaded_comment_polymorphic_type]), "Response body did not include threaded_comment_polymorphic_type"
+    assert @response.body.index(@test_comment[:parent_id]), "Response body did not include parent_id"
+    assert @response.body.index("threaded_comment[name]"), "Response body did not include form for name"
+    assert @response.body.index("threaded_comment[body]"), "Response body did not include form for body"
+    assert @response.body.index("threaded_comment[email]"), "Response body did not include form for email"
+    assert @response.body.index("threaded_comment[threaded_comment_polymorphic_id]"), "Response body did not include form for threaded_comment_polymorphic_id"
+    assert @response.body.index("threaded_comment[threaded_comment_polymorphic_type]"), "Response body did not include form for threaded_comment_polymorphic_type"
+    assert @response.body.index("threaded_comment[parent_id]"), "Response body did not include form for parent_id"
   end
   
   def test_comment_upmod

@@ -1,0 +1,165 @@
+/************************************************
+    Styles for displaying comment threads
+*************************************************/
+.threaded_comment_container{
+width: 100%;
+position: relative;
+padding-bottom: 5px;
+}
+
+.threaded_comment_container_header{
+position: absolute;
+top: 0px;
+left: 70px;
+color: #656565;
+font-size: 90%;
+}
+
+.threaded_comment_name{
+color: #2a2a2a;
+font-size: 110%;
+}
+
+.threaded_comment_age{
+
+}
+
+.threaded_comment_link{
+text-decoration: none;
+}
+
+.threaded_comment_link:hover{
+text-decoration: underline;
+}
+
+.flag_threaded_comment_container{
+
+}
+
+.flag_threaded_comment_container a{
+text-decoration: none;
+}
+
+.flag_threaded_comment_container a:hover{
+text-decoration: underline;
+}
+
+.threaded_comment_rating_container{
+position: absolute;
+top: 2px;
+left: 0px;
+}
+
+.upmod_threaded_comment{
+position: absolute;
+left: 0px;
+top: 0px;
+display: block;
+width: 20px;
+height: 20px;
+background: transparent url(/has-threaded-comments-images/upmod-arrow.gif) top left no-repeat;
+}
+
+.threaded_comment_rating_text{
+display: block;
+width: 20px;
+height: 20px;
+line-height: 20px;
+text-align: center;
+position: absolute;
+top: 0px;
+left: 20px;
+}
+
+.downmod_threaded_comment{
+position: absolute;
+left: 40px;
+top: 0px;
+display: block;
+width: 20px;
+height: 20px;
+background: transparent url(/has-threaded-comments-images/downmod-arrow.gif) top left no-repeat;
+}
+
+.threaded_comment_body{
+padding-top: 15px;
+margin: 0;
+}
+
+.threaded_comment_reply_container{
+
+}
+
+.threaded_comment_reply_container a{
+
+}
+
+.threaded_comment_container_footer{
+}
+
+.subcomment_container{
+width: auto;
+padding-left: 30px;
+}
+
+/************************************************
+    Styles for displaying the new comment form
+*************************************************/
+.new_threaded_comment_form{
+
+}
+
+.new_threaded_comment_email_confirm{
+/* this is to hide the honeypot field */
+position: absolute;
+left: -20000px;
+top: -20000px;
+}
+
+.new_threaded_comment_name{
+
+}
+
+.threaded_comment_name_input{
+width: 200px;
+}
+
+.new_threaded_comment_email{
+
+}
+
+.threaded_comment_email_input{
+width: 200px;
+}
+
+.new_threaded_comment_body{
+
+}
+
+.threaded_comment_body_input{
+width: 100%;
+height: 130px;
+}
+
+.new_threaded_comment_submit{
+
+}
+
+.threaded_comment_submit_input{
+
+}
+
+/************************************************
+    Styles for form errors
+*************************************************/
+.fieldWithErrors input, .fieldWithErrors textarea{
+margin-top: 4px;
+outline: red dashed 2px;
+}
+
+.errorExplanation{
+margin-top: 15px;
+outline: red dashed 2px;
+padding: 10px 20px;
+background: #f2ebeb;
+}
