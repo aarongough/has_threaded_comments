@@ -3,13 +3,18 @@ require File.join(File.dirname(__FILE__), '..', 'test_helper.rb')
 class ThreadedCommentTest < ActiveSupport::TestCase 
   
   def setup
+    @sample_book = {
+      :title => "This is a test title",
+      :content => "Wow! This item has some content!"
+    }
     @sample_comment = {
       :name => 'Test Commenter', 
       :body => 'This the medium size comment body...', 
-      :email => "test@example.com", 
-      :threaded_comment_polymorphic_id => 0, 
+      :email => "test@example.com",
+      :threaded_comment_polymorphic_id => 1, 
       :threaded_comment_polymorphic_type => 'Book'
     }
+    @test_book = Book.create!(@sample_book)
   end
   
   test "threaded comment should be created" do
@@ -44,7 +49,7 @@ class ThreadedCommentTest < ActiveSupport::TestCase
     
   test "threaded sub-comment should be created and associated with it's correct parent" do
     assert_difference('ThreadedComment.count', 2) do
-      @test_comment = ThreadedComment.create(@sample_comment)
+      @test_comment = @test_book.comments.create(@sample_comment)
       @test_subcomment = ThreadedComment.create(@sample_comment.merge({:parent_id => @test_comment.id, :threaded_comment_polymorphic_id => nil, :threaded_comment_polymorphic_type => nil}))
       @test_subcomment.reload
       assert_equal @test_comment.threaded_comment_polymorphic_id, @test_subcomment.threaded_comment_polymorphic_id
@@ -89,5 +94,10 @@ class ThreadedCommentTest < ActiveSupport::TestCase
       @test_comment = ThreadedComment.create(@sample_comment)
       assert_equal "#{@test_comment.email}-#{@test_comment.created_at}".hash.to_s(16), @test_comment.email_hash
     end
+  end
+  
+  test "owner_item should alias threaded_comment_polymorphic" do
+    @test_comment = ThreadedComment.create(@sample_comment)
+    assert_equal @test_comment.owner_item, @test_comment.threaded_comment_polymorphic
   end
 end 

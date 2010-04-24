@@ -3,14 +3,19 @@ require 'action_controller/test_process'
 
 class ThreadedCommentsControllerTest < ActionController::TestCase
 
-  def setup     
+  def setup    
+    @sample_book = {
+      :title => "This is a test title",
+      :content => "Wow! This item has some content!"
+    } 
     @sample_comment = {
       :name => 'Test Commenter', 
       :body => 'This the medium size comment body...', 
       :email => "test@example.com", 
-      :threaded_comment_polymorphic_id => "0", 
+      :threaded_comment_polymorphic_id => "1", 
       :threaded_comment_polymorphic_type => 'Book'
     }
+    @test_book = Book.create!(@sample_book)
     ThreadedComment.create(@sample_comment)
   end
   
@@ -49,8 +54,9 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
   end
   
   test "should create sub-comment" do
+    @test_parent_comment = @test_book.comments.create(@sample_comment)
     assert_difference('ThreadedComment.count') do
-      put :create, :threaded_comment => @sample_comment.merge({:parent_id => "1"})
+      put :create, :threaded_comment => @sample_comment.merge({:parent_id => @test_parent_comment.id.to_s})
       assert_response :success
       assert @response.body.index(@sample_comment[:name]), "Did not include comment name"
       assert @response.body.index(@sample_comment[:body]), "Did not include comment body"

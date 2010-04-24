@@ -8,6 +8,7 @@ class ThreadedComment < ActiveRecord::Base
   validates_format_of     :email, :with => /.*@.*\./
 
   belongs_to :threaded_comment_polymorphic, :polymorphic => true
+  alias owner_item threaded_comment_polymorphic
   
   before_validation   :assign_owner_info_to_nested_comment
   

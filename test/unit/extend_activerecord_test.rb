@@ -12,7 +12,7 @@ class ExtendActiverecordTest < ActiveSupport::TestCase
       :name => 'Test Commenter', 
       :body => 'This the medium size comment body...', 
       :email => "test@example.com", 
-      :threaded_comment_polymorphic_id => 0, 
+      :threaded_comment_polymorphic_id => 1, 
       :threaded_comment_polymorphic_type => 'Book'
     }
   end

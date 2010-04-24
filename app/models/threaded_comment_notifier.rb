@@ -12,9 +12,11 @@ class ThreadedCommentNotifier < ActionMailer::Base
     return unless(THREADED_COMMENTS_CONFIG["enable_notifications"])
     recipients  user_email
     from        THREADED_COMMENTS_CONFIG["system_send_email_address"]
-    if( comment.parent_id > 0 )
-      body :parent_comment => ThreadedComment.find( comment.parent_id ), :comment => comment
+    if( comment.parent_id == 0 )
       subject   THREADED_COMMENTS_CONFIG["comment_reply_subject"].gsub("{name}", comment.name)
+    else
+      body :parent_comment => ThreadedComment.find( comment.parent_id ), :comment => comment
+      subject   "#{comment.name} has replied to your comment"
       return
     end
     body        :comment => comment
