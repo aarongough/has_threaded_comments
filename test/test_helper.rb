@@ -1,13 +1,18 @@
 ENV['RAILS_ENV'] = 'test' 
 ENV['RAILS_ROOT'] ||= File.dirname(__FILE__) + '/../../../..' 
-require File.expand_path(File.join(ENV['RAILS_ROOT'], 'config/environment.rb')) 
+require File.expand_path(File.join(ENV['RAILS_ROOT'], 'config/environment.rb'))
+
+load_path = File.join( File.dirname(__FILE__), "..", "generators", "install_has_threaded_comments", "templates", "threaded_comments_config.yml")
+if( File.exists?(load_path))
+  THREADED_COMMENTS_CONFIG = YAML.load_file(load_path)[RAILS_ENV]
+end
 
 require 'test_help'
 require 'test/unit' 
 
 def load_schema 
-  config = YAML::load(IO.read(File.dirname(__FILE__) + '/database.yml'))  
-  ActiveRecord::Base.logger = Logger.new(File.dirname(__FILE__) + "/debug.log")
+  config = YAML::load(IO.read(File.join(File.dirname(__FILE__), 'fixtures', 'database.yml')))  
+  ActiveRecord::Base.logger = Logger.new(File.join(File.dirname(__FILE__), 'debug.log'))
   
   db_adapter = ENV['DB'] 
   
@@ -30,8 +35,8 @@ def load_schema
   end  
   
   ActiveRecord::Base.establish_connection(config[db_adapter])  
-  load(File.dirname(__FILE__) + "/schema.rb")  
-  require File.dirname(__FILE__) + '/../rails/init.rb' 
+  load(File.join(File.dirname(__FILE__), 'fixtures', 'schema.rb'))  
+  require File.join(File.dirname(__FILE__), '..', 'rails', 'init.rb') 
 end
 
 load_schema

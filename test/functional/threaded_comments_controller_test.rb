@@ -1,31 +1,20 @@
-require File.dirname(__FILE__) + '/test_helper.rb' 
-require 'threaded_comments_controller' 
-require 'action_controller/test_process' 
+require File.join(File.dirname(__FILE__), '..', 'test_helper.rb')
+require 'action_controller/test_process'
 
-class ThreadedCommentsController
-  def rescue_action(e) 
-    raise e  
-  end 
-end 
+class ThreadedCommentsControllerTest < ActionController::TestCase
 
-class ThreadedCommentsControllerTest < ActionController::TestCase 
-  def setup 
-    @controller = ThreadedCommentsController.new 
-    @request = ActionController::TestRequest.new 
-    @response = ActionController::TestResponse.new 
-    
+  def setup     
     @sample_comment = {
       :name => 'Test Commenter', 
       :body => 'This the medium size comment body...', 
       :email => "test@example.com", 
-      :threaded_comment_polymorphic_id => 0, 
+      :threaded_comment_polymorphic_id => "0", 
       :threaded_comment_polymorphic_type => 'Book'
     }
-    
     ThreadedComment.create(@sample_comment)
   end
   
-  def test_show
+  test "should get show" do
     @test_comment = ThreadedComment.new(@sample_comment.merge({:parent_id => 0}))
     @test_comment.save
     get :show, :id => @test_comment.id
@@ -39,7 +28,7 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
     assert @response.body.index(new_threaded_comment_path), "Did not include link to new"
   end
   
-  def test_should_not_show_comments_with_flags_greater_than_flag_threshold
+  test "show should not display threaded comments with flags greater than flag_threshold" do
     @test_comment = ThreadedComment.new(@sample_comment.merge({:name => "Flagged Commenter"}))
     @test_comment.flags = 99999999
     @test_comment.save
@@ -50,32 +39,32 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
     assert_nil @response.body.index(@test_comment.body), "Should not include comment body"
   end
   
-  def test_should_create_comment
-    @expected_comment_count = ThreadedComment.count + 1
-    put :create, :threaded_comment => @sample_comment
-    assert_response :success
-    assert_equal @expected_comment_count, ThreadedComment.count
-    assert @response.body.index(@sample_comment[:name]), "Did not include comment name"
-    assert @response.body.index(@sample_comment[:body]), "Did not include comment body"
+  test "should create comment" do
+    assert_difference('ThreadedComment.count') do
+      put :create, :threaded_comment => @sample_comment
+      assert_response :success
+      assert @response.body.index(@sample_comment[:name]), "Did not include comment name"
+      assert @response.body.index(@sample_comment[:body]), "Did not include comment body"
+    end
   end
   
-  def test_should_create_subcomment
-    @expected_comment_count = ThreadedComment.count + 1
-    put :create, :threaded_comment => @sample_comment.merge({:parent_id => "2"})
-    assert_response :success
-    assert_equal @expected_comment_count, ThreadedComment.count
-    assert @response.body.index(@sample_comment[:name]), "Did not include comment name"
-    assert @response.body.index(@sample_comment[:body]), "Did not include comment body"
+  test "should create sub-comment" do
+    assert_difference('ThreadedComment.count') do
+      put :create, :threaded_comment => @sample_comment.merge({:parent_id => "1"})
+      assert_response :success
+      assert @response.body.index(@sample_comment[:name]), "Did not include comment name"
+      assert @response.body.index(@sample_comment[:body]), "Did not include comment body"
+    end
   end
   
-  def test_should_not_create_comment_if_negative_captcha_is_filled
+  test "should not create comment if negative captcha is filled" do
     assert_no_difference('ThreadedComment.count') do
       put :create, :threaded_comment => @sample_comment.merge({:confirm_email => "test@example.com"})
     end
     assert_response :bad_request
   end
   
-  def test_new
+  test "should get new" do
     session[:name] = "Test Name"
     session[:email] = "Test Name"
     @test_comment = @sample_comment.merge({:name => nil, :email => nil, :parent_id => "2"})
@@ -96,30 +85,30 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
     assert @response.body.index("threaded_comment[parent_id]"), "Response body did not include form for parent_id"
   end
   
-  def test_comment_upmod
-    @expected_rating = ThreadedComment.find(1).rating + 1
-    post :upmod, :id => 1
-    assert_response :success
-    assert_equal @expected_rating, ThreadedComment.find(1).rating
-    assert @response.body.index(@expected_rating.to_s), "Response body did not include new rating"
+  test "should upmod comment" do
+    assert_difference('ThreadedComment.find(1).rating') do
+      post :upmod, :id => 1
+      assert_response :success
+      assert @response.body.index(@expected_rating.to_s), "Response body did not include new rating"
+    end
   end
   
-  def test_comment_downmod
-    @expected_rating = ThreadedComment.find(1).rating - 1
-    post :downmod, :id => 1
-    assert_response :success
-    assert_equal @expected_rating, ThreadedComment.find(1).rating
-    assert @response.body.index(@expected_rating.to_s), "Response body did not include new rating"
+  test "should downmod comment" do
+    assert_difference('ThreadedComment.find(1).rating', -1) do
+      post :downmod, :id => 1
+      assert_response :success
+      assert @response.body.index(@expected_rating.to_s), "Response body did not include new rating"
+    end
   end
   
-  def test_comment_flag
-    @expected_flags = ThreadedComment.find(1).flags + 1
-    post :flag, :id => 1
-    assert_response :success
-    assert_equal @expected_flags, ThreadedComment.find(1).flags
+  test "should flag comment" do
+    assert_difference('ThreadedComment.find(1).flags') do
+      post :flag, :id => 1
+      assert_response :success
+    end
   end
   
-  def test_should_only_allow_voting_or_flagging_once_per_session
+  test "should only allow rating or flagging once per action per session" do
     @actions = [
       { :action => 'flag', :field => 'flags', :difference => 1},
       { :action => 'upmod', :field => 'rating', :difference => 1},
@@ -137,7 +126,7 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
     end
   end
   
-  def test_should_remove_email_notifications_if_hash_matches
+  test "should remove emails notifications if hash matches" do
     test_comment = ThreadedComment.find(1)
     assert !test_comment.email.empty?
     assert test_comment.notifications == true
@@ -149,7 +138,7 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
     assert @response.body.index( "removed" ), "Removal notice was not included in response body"
   end
   
-  def test_should_not_remove_email_notifications_if_hash_does_not_match
+  test "should not remove email notifications if hash does not match" do
     test_comment = ThreadedComment.find(1)
     assert !test_comment.email.empty?
     assert test_comment.notifications == true
