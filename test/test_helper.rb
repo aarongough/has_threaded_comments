@@ -41,17 +41,7 @@ end
 
 load_schema
 
-class Book < ActiveRecord::Base 
-  has_threaded_comments
-end 
+require File.join(File.dirname(__FILE__), 'fixtures', 'models.rb')
+require File.join(File.dirname(__FILE__), 'fixtures', 'controllers.rb')
+require File.join(File.dirname(__FILE__), 'fixtures', 'routes.rb')
 
-class Article < ActiveRecord::Base 
-  has_threaded_comments
-end
-
-Book.create()
-Article.create()
-
-ActionController::Routing::Routes.draw do |map| 
-  map.resources :books, :articles
-end 

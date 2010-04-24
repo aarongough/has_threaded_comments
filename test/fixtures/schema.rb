@@ -8,11 +8,6 @@ ActiveRecord::Schema.define(:version => 0) do
     t.text      :content
     t.string    :email
     t.boolean   :notifications, :default => true
-  end  
-  
-  create_table :articles, :force => true do  |t| 
-    t.string    :title  
-    t.text      :content
   end
   
   create_table :threaded_comments, :force => true do |t|

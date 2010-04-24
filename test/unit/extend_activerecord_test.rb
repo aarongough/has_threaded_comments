@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), '..', 'test_helper.rb')
 class ExtendActiverecordTest < ActiveSupport::TestCase 
   
   def setup
-    @sample_book = @sample_article = {
+    @sample_book = {
       :title => "This is a test title",
       :content => "Wow! This item has some content!"
     }
@@ -20,12 +20,6 @@ class ExtendActiverecordTest < ActiveSupport::TestCase
   test "book schema and model has loaded correctly" do
     assert_difference('Book.count') do
       assert Book.new(@sample_book).save
-    end
-  end
-  
-  test "article schema and model has loaded correctly" do
-    assert_difference('Article.count') do
-      assert Article.new(@sample_article).save
     end
   end
   
