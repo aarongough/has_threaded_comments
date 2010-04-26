@@ -12,10 +12,9 @@ reverse captchas (honeypots) to foil spambots.
 
 Additionally has_threaded_comments will use validates_text_content to provide automatic
 content moderation if the validates_text_content plugin has been installed.
-  (https://aarongough.devguard.com/sv/plugins/validates_text_content)
+  (http://github.com/aarongough/validates_text_content)
   
-If you find an issue with this plugin please contact me at: aaron@aarongough.com
-(Preferably with a patch that provides a failing test case highlighting your issue)
+If you have any questions or find an issue with this plugin please contact me at: aaron@aarongough.com
 
 Interfaces
 ==========
