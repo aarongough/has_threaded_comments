@@ -1,7 +1,7 @@
 has_threaded_comments
 =====================
 
-has_threaded_comments is a Rails Engine that provides an entire threaded commenting
+has_threaded_comments is a Rails plugin that provides an entire threaded commenting
 system with the addition of only a few lines of code to your application. The commenting
 system include support for rating and flagging of comments as well as automatically
 generating email notifications (for both users and website admin) of replies to comments.
