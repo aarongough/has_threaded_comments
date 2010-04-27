@@ -44,4 +44,7 @@ load_schema
 require File.join(File.dirname(__FILE__), 'fixtures', 'models.rb')
 require File.join(File.dirname(__FILE__), 'fixtures', 'controllers.rb')
 require File.join(File.dirname(__FILE__), 'fixtures', 'routes.rb')
+require File.join(File.dirname(__FILE__), 'fixtures', 'threaded_comments_index.rb')
+
+ThreadedCommentsController.send :include, ThreadedCommentsIndex
 
