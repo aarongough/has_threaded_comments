@@ -102,6 +102,11 @@ width: auto;
 padding-left: 30px;
 }
 
+.subcomment_container_no_indent{
+width: auto;
+padding-left: 0;
+}
+
 /************************************************
     Styles for displaying the new comment form
 *************************************************/
