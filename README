@@ -44,6 +44,7 @@ Routes:
 
 Generated Files
 ===============
+
 When has_threaded_comments is fully installed it adds the following files to your application:
 
     config/threaded_comments_connfig.yml
@@ -55,6 +56,18 @@ When has_threaded_comments is fully installed it adds the following files to you
 
 Installation
 ============
+
+To add the plugin to your application use one of the following commands:
+
+    # To install via Git using script/plugin:
+    ./script/plugin install git://github.com/aarongough/has_threaded_comments.git
+    
+    # To install via SVN using script/plugin
+    ./script/plugin install http://svn.github.com/aarongough/has_threaded_comments.git
+    
+    # If your application is not under version control you can still install using a SVN export:
+    ./script/plugin install -e http://svn.github.com/aarongough/has_threaded_comments.git
+
 To install has_threaded_comments you need to run the install_has_threaded_comments generator like so:
 
     ./script/generate install_has_threaded_comments
