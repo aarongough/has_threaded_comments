@@ -2,6 +2,7 @@ production:
   site_domain:                      yoursite.com
   admin_email:                      admin@yoursite.com
   system_send_email_address:        noreply@yoursite.com
+  max_indent:                       3
   flag_threshold:                   3
   new_comment_subject:              Yoursite.com - New comment
   failed_comment_creation_subject:  Yoursite.com - Failed comment creation
@@ -14,6 +15,7 @@ development:
   site_domain:                      yoursite.com
   admin_email:                      info@whyiamangry.com
   system_send_email_address:        noreply@yoursite.com
+  max_indent:                       3
   flag_threshold:                   3
   new_comment_subject:              Yoursite.com - New comment
   failed_comment_creation_subject:  Yoursite.com - Failed comment creation
@@ -26,6 +28,7 @@ test:
   site_domain:                      yoursite.com
   admin_email:                      tests@example.com
   system_send_email_address:        sendtest@example.com
+  max_indent:                       3
   flag_threshold:                   3
   new_comment_subject:              Yoursite.com - New comment
   failed_comment_creation_subject:  Yoursite.com - Failed comment creation
