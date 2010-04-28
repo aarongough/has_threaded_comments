@@ -14,7 +14,8 @@ module ThreadedCommentsHelper
       :no_comments_message => "There aren't any comments yet, be the first to comment!",
       :header_separator => " - ",
       :reply_text => "Reply"
-    }.merge(options)
+    }.merge(options).merge(THREADED_COMMENTS_CONFIG.map { |k,v| { k.to_sym => v }}[0])
+    
     return options[:no_comments_message] unless(comments.length > 0)
     unless(options[:sorted])
       comments = comments.delete_if{|comment| (comment.flags > THREADED_COMMENTS_CONFIG['flag_threshold']) && (THREADED_COMMENTS_CONFIG['flag_threshold'] > 0) }
