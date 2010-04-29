@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), '..', 'test_helper.rb')
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'test_helper.rb'))
 
 class ThreadedCommentsControllerTest < ActionController::TestCase
 
@@ -16,33 +16,6 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
     }
     @test_book = Book.create!(@sample_book)
     ThreadedComment.create(@sample_comment)
-  end
-  
-  test "should get index" do
-    @comments = []
-    5.times do
-      @parent_comment = @test_book.comments.create(@sample_comment)
-      @comments << @parent_comment
-      3.times do
-        @subcomment1 = @test_book.comments.create(@sample_comment.merge({:parent_id => @parent_comment.id}))
-        @comments << @subcomment1
-          2.times do
-            @subcomment2 = @test_book.comments.create(@sample_comment.merge({:parent_id => @subcomment1.id}))
-            @comments << @subcomment2
-          end
-      end
-    end
-    get :index
-    assert_response :success, @response.body
-    assert_not_nil assigns(:comments)
-    @comments.each do |comment|
-      assert @response.body.index(comment.name), "Did not include comment name"
-      assert @response.body.index(comment.body), "Did not include comment body"
-      assert @response.body.index(upmod_threaded_comment_path(comment)), "Did not include link to upmod"
-      assert @response.body.index(downmod_threaded_comment_path(comment)), "Did not include link to downmod"
-      assert @response.body.index(flag_threaded_comment_path(comment)), "Did not include link to flag"
-      assert @response.body.index(new_threaded_comment_path), "Did not include link to new"
-    end
   end
   
   test "should get show" do

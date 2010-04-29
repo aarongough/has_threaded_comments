@@ -11,7 +11,7 @@ require 'test_help'
 require 'test/unit' 
 
 def load_schema 
-  config = YAML::load(IO.read(File.join(File.dirname(__FILE__), 'fixtures', 'database.yml')))  
+  config = YAML::load(IO.read(File.join(File.dirname(__FILE__), 'setup', 'database.yml')))  
   ActiveRecord::Base.logger = Logger.new(File.join(File.dirname(__FILE__), 'debug.log'))
   
   db_adapter = ENV['DB'] 
@@ -35,35 +35,17 @@ def load_schema
   end  
   
   ActiveRecord::Base.establish_connection(config[db_adapter])  
-  load(File.join(File.dirname(__FILE__), 'fixtures', 'schema.rb'))  
+  load(File.join(File.dirname(__FILE__), 'setup', 'schema.rb'))  
   require File.join(File.dirname(__FILE__), '..', 'rails', 'init.rb') 
 end
 
 load_schema
 
-require File.join(File.dirname(__FILE__), 'fixtures', 'models.rb')
-require File.join(File.dirname(__FILE__), 'fixtures', 'controllers.rb')
-require File.join(File.dirname(__FILE__), 'fixtures', 'routes.rb')
-require File.join(File.dirname(__FILE__), 'fixtures', 'threaded_comments_index.rb')
-
 require 'factory_girl'
 
-if Factory.factories.length == 0
+require File.join(File.dirname(__FILE__), 'setup', 'models.rb')
+require File.join(File.dirname(__FILE__), 'setup', 'controllers.rb')
+require File.join(File.dirname(__FILE__), 'setup', 'routes.rb')
 
-  Factory.define :book do |b|
-    b.title 'moby dick'
-    b.content  'call me ishmael...'
-    b.email 'book@books.com'
-  end
-
-  Factory.define :threaded_comment do |t|
-    t.name 'anon'
-    t.email 'anon@anons.com'
-    t.body 'this book rules askdjalskdjal laksjlakjd alksjd alskdjlaksjdal skdja sldkajs'
-    t.threaded_comment_polymorphic_type 'Book'
-    t.association :threaded_comment_polymorphic_id, :factory => :book
-  end
-end
-
-ThreadedCommentsController.send :include, ThreadedCommentsIndex
-
+require File.join(File.dirname(__FILE__), 'factories', 'book_factories.rb')
+require File.join(File.dirname(__FILE__), 'factories', 'threaded_comment_factories.rb')
