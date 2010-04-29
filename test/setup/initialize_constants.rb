@@ -1,0 +1,1 @@
+THREADED_COMMENTS_CONFIG = YAML.load_file(File.join(File.dirname(__FILE__), "..", "..", "generators", "install_has_threaded_comments", "templates", "threaded_comments_config.yml"))[RAILS_ENV]
