@@ -1,9 +1,5 @@
-if Factory.factories.length == 0
-
-  Factory.define :book do |b|
-    b.title 'moby dick'
-    b.content  'call me ishmael...'
-    b.email 'book@books.com'
-  end
-  
+Factory.define :book do |f|
+  f.sequence(:title) {|n| "Book #{n}" }
+  f.content  'Call me ishmael...'
+  f.sequence(:email) {|n| "book#{n}@example.com" }
 end

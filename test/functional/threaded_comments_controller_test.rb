@@ -2,24 +2,13 @@ require File.expand_path(File.join(File.dirname(__FILE__), '..', 'test_helper.rb
 
 class ThreadedCommentsControllerTest < ActionController::TestCase
 
-  def setup    
-    @sample_book = {
-      :title => "This is a test title",
-      :content => "Wow! This item has some content!"
-    } 
-    @sample_comment = {
-      :name => 'Test Commenter', 
-      :body => 'This the medium size comment body...', 
-      :email => "test@example.com", 
-      :threaded_comment_polymorphic_id => "1", 
-      :threaded_comment_polymorphic_type => 'Book'
-    }
-    @test_book = Book.create!(@sample_book)
-    ThreadedComment.create(@sample_comment)
+  def setup
+    @test_book = Book.create!(Factory.attributes_for(:book))
+    ThreadedComment.create!(Factory.attributes_for(:threaded_comment))
   end
   
   test "should get show" do
-    @test_comment = ThreadedComment.new(@sample_comment.merge({:parent_id => 0}))
+    @test_comment = ThreadedComment.new(Factory.attributes_for(:threaded_comment, :parent_id => 0))
     @test_comment.save
     get :show, :id => @test_comment.id
     assert_response :success, @response.body
@@ -33,7 +22,7 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
   end
   
   test "show should not display threaded comments with flags greater than flag_threshold" do
-    @test_comment = ThreadedComment.new(@sample_comment.merge({:name => "Flagged Commenter"}))
+    @test_comment = ThreadedComment.new(Factory.attributes_for(:threaded_comment, :name => "Flagged Commenter"))
     @test_comment.flags = 99999999
     @test_comment.save
     get :show, :id => @test_comment.id
@@ -45,26 +34,28 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
   
   test "should create comment" do
     assert_difference('ThreadedComment.count') do
-      put :create, :threaded_comment => @sample_comment
+      @test_comment = Factory.attributes_for(:threaded_comment)
+      put :create, :threaded_comment => @test_comment
       assert_response :success
-      assert @response.body.index(@sample_comment[:name]), "Did not include comment name"
-      assert @response.body.index(@sample_comment[:body]), "Did not include comment body"
+      assert @response.body.index(@test_comment[:name]), "Did not include comment name"
+      assert @response.body.index(@test_comment[:body]), "Did not include comment body"
     end
   end
   
   test "should create sub-comment" do
-    @test_parent_comment = @test_book.comments.create(@sample_comment)
+    @test_parent_comment = @test_book.comments.create!(Factory.attributes_for(:threaded_comment))
+    @test_comment = Factory.attributes_for(:threaded_comment, :parent_id => @test_parent_comment.id.to_s)
     assert_difference('ThreadedComment.count') do
-      put :create, :threaded_comment => @sample_comment.merge({:parent_id => @test_parent_comment.id.to_s})
+      put :create, :threaded_comment => @test_comment
       assert_response :success
-      assert @response.body.index(@sample_comment[:name]), "Did not include comment name"
-      assert @response.body.index(@sample_comment[:body]), "Did not include comment body"
+      assert @response.body.index(@test_comment[:name]), "Did not include comment name"
+      assert @response.body.index(@test_comment[:body]), "Did not include comment body"
     end
   end
   
   test "should not create comment if negative captcha is filled" do
     assert_no_difference('ThreadedComment.count') do
-      put :create, :threaded_comment => @sample_comment.merge({:confirm_email => "test@example.com"})
+      put :create, :threaded_comment => Factory.attributes_for(:threaded_comment, :confirm_email => "test@example.com")
     end
     assert_response :bad_request
   end
@@ -72,7 +63,7 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
   test "should get new" do
     session[:name] = "Test Name"
     session[:email] = "Test Name"
-    @test_comment = @sample_comment.merge({:name => nil, :email => nil, :parent_id => "2"})
+    @test_comment = Factory.attributes_for(:threaded_comment, :name => nil, :email => nil, :parent_id => "2")
     get :new, :threaded_comment => @test_comment
     assert_response :success
     assert_not_nil assigns(:comment)

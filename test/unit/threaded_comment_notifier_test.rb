@@ -3,19 +3,8 @@ require File.expand_path(File.join(File.dirname(__FILE__), '..', 'test_helper.rb
 class ThreadedCommentNotifierTest < ActionMailer::TestCase
 
   def setup
-    @sample_book = {
-      :title => "This is a test title",
-      :content => "Wow! This item has some content!"
-    }
-    @sample_comment = {
-      :name => 'Test Commenter', 
-      :body => 'This the medium size comment body...', 
-      :email => "test@example.com", 
-      :threaded_comment_polymorphic_id => 1, 
-      :threaded_comment_polymorphic_type => 'Book'
-    }
-    @test_book = Book.create!(@sample_book)
-    @test_comment = @test_book.comments.create!(@sample_comment.merge({:threaded_comment_polymorphic_id => nil, :threaded_comment_polymorphic_type => nil}))
+    @test_book = Book.create!(Factory.attributes_for(:book))
+    @test_comment = @test_book.comments.create!(Factory.attributes_for(:threaded_comment, :threaded_comment_polymorphic_id => nil, :threaded_comment_polymorphic_type => nil))
   end
   
   test "should send new comment notification" do
