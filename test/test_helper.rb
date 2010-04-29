@@ -46,5 +46,24 @@ require File.join(File.dirname(__FILE__), 'fixtures', 'controllers.rb')
 require File.join(File.dirname(__FILE__), 'fixtures', 'routes.rb')
 require File.join(File.dirname(__FILE__), 'fixtures', 'threaded_comments_index.rb')
 
+require 'factory_girl'
+
+if Factory.factories.length == 0
+
+  Factory.define :book do |b|
+    b.title 'moby dick'
+    b.content  'call me ishmael...'
+    b.email 'book@books.com'
+  end
+
+  Factory.define :threaded_comment do |t|
+    t.name 'anon'
+    t.email 'anon@anons.com'
+    t.body 'this book rules askdjalskdjal laksjlakjd alksjd alskdjlaksjdal skdja sldkajs'
+    t.threaded_comment_polymorphic_type 'Book'
+    t.association :threaded_comment_polymorphic_id, :factory => :book
+  end
+end
+
 ThreadedCommentsController.send :include, ThreadedCommentsIndex
 
