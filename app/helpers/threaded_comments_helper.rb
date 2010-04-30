@@ -5,14 +5,14 @@ module ThreadedCommentsHelper
       :indent_level => 0,
       :base_indent => 0,
       :parent_id => 0,
-      :sorted => false
+      :bucketed => false
     }.merge(THREADED_COMMENTS_CONFIG[:render_threaded_comments].dup).merge(options)
     
     return options[:no_comments_message] unless(comments.length > 0)
-    unless(options[:sorted])
+    unless(options[:bucketed])
       comments = comments.delete_if{|comment| (comment.flags > options[:flag_threshold]) && (options[:flag_threshold] > 0) }
       options[:parent_id] = comments.first.parent_id if(comments.length == 1)
-      comments = sort_comments(comments)
+      comments = bucket_comments(comments)
     end
     return '' if( comments[options[:parent_id]].nil? )
     ret = ''
@@ -47,24 +47,15 @@ module ThreadedCommentsHelper
       
       if options[:max_indent] <= options[:indent_level] or !comments.first #used to distinguish ajax/html responses
         ret << this_indent << "<div class=\"subcomment_container_no_indent\" id=\"subcomment_container_#{comment.id}\">\n"
-        ret << render_threaded_comments( comments, options.merge({:parent_id => comment.id, :indent_level => options[:indent_level] + 1, :sorted => true })) unless( comments[comment.id].nil? )
+        ret << render_threaded_comments( comments, options.merge({:parent_id => comment.id, :indent_level => options[:indent_level] + 1, :bucketed => true })) unless( comments[comment.id].nil? )
         ret << this_indent << "</div>\n"
       else
         ret << this_indent << "<div class=\"subcomment_container\" id=\"subcomment_container_#{comment.id}\">\n"
-        ret << render_threaded_comments( comments, options.merge({:parent_id => comment.id, :indent_level => options[:indent_level] + 1, :sorted => true })) unless( comments[comment.id].nil? )
+        ret << render_threaded_comments( comments, options.merge({:parent_id => comment.id, :indent_level => options[:indent_level] + 1, :bucketed => true })) unless( comments[comment.id].nil? )
         ret << this_indent << "</div>\n"
       end
     end
     return ret
-  end
-  
-  def sort_comments( comments )
-    bucketed_comments = []
-    comments.each do |comment|
-      bucketed_comments[comment.parent_id] = [] if( bucketed_comments[comment.parent_id].nil? )
-      bucketed_comments[comment.parent_id] << comment
-    end
-    return bucketed_comments
   end
   
   def render_comment_form(comment, options={})
@@ -80,5 +71,16 @@ module ThreadedCommentsHelper
     }.merge(options)    
     render :partial => options[:partial], :locals => options
   end
+  
+  private
+  
+    def bucket_comments( comments )
+      bucketed_comments = []
+      comments.each do |comment|
+        bucketed_comments[comment.parent_id] = [] if( bucketed_comments[comment.parent_id].nil? )
+        bucketed_comments[comment.parent_id] << comment
+      end
+      return bucketed_comments
+    end
 
 end
