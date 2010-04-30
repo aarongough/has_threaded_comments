@@ -7,7 +7,7 @@ class ThreadedCommentsHelperTest < ActionView::TestCase
   
   def setup
     @test_book = Book.create!(Factory.attributes_for(:book))
-    @test_comments = complex_thread(2)
+    @test_comments = create_complex_thread(2)
     @rendered_html = render_threaded_comments(@test_comments)
   end
 
@@ -69,7 +69,7 @@ class ThreadedCommentsHelperTest < ActionView::TestCase
   end
   
   test "should bucket comments for rendering" do
-    test_comments = complex_thread(2)
+    test_comments = create_complex_thread(2)
     assert test_comments.first.is_a?(ThreadedComment)
     bucketed_comments = bucket_comments(test_comments)
     assert_not_equal bucketed_comments, test_comments
@@ -136,36 +136,6 @@ class ThreadedCommentsHelperTest < ActionView::TestCase
       else
         flunk "Unrecognized option type: #{THREADED_COMMENTS_CONFIG[namespace][option_name].class}"
       end
-    end
-  
-    def complex_thread(length=100)
-      comments = []
-      length.times do
-        comments << parent_comment = Factory.build(:threaded_comment)
-        3.times do
-          comments << subcomment1 = Factory.build(:threaded_comment, :parent_id => parent_comment.id)
-          2.times do
-            comments << subcomment2 = Factory.build(:threaded_comment, :parent_id => subcomment1.id)
-            2.times do
-              comments << subcomment3 = Factory.build(:threaded_comment, :parent_id => subcomment2.id)
-            end
-          end
-        end
-      end
-      comments
-    end
-    
-    def change_config_option(namespace, key, value, &block)
-      old_config = THREADED_COMMENTS_CONFIG.dup
-      old_stderr = $stderr
-      $stderr = StringIO.new
-      THREADED_COMMENTS_CONFIG[namespace][key] = value
-      $stderr = old_stderr
-      yield block
-    ensure
-      $stderr = StringIO.new
-      Kernel.const_set('THREADED_COMMENTS_CONFIG', old_config)
-      $stderr = old_stderr
     end
 
 end

@@ -13,6 +13,14 @@ Rake::TestTask.new(:test) do |t|
   t.verbose = true
 end
 
+desc 'Test the performance of the has_threaded_comments plugin.'
+Rake::TestTask.new("test:performance") do |t|
+  t.libs << 'lib'
+  t.libs << 'test'
+  t.pattern = 'test/**/*_benchmark.rb'
+  t.verbose = true
+end
+
 desc 'Generate documentation for the has_threaded_comments plugin.'
 Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
