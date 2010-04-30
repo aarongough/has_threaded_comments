@@ -3,6 +3,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), '..', 'test_helper.rb
 class ThreadedCommentsHelperTest < ActionView::TestCase
 
   include ThreadedCommentsHelper
+  include ActionViewStubs
   
   def setup
     @test_book = Book.create!(Factory.attributes_for(:book))
@@ -73,23 +74,6 @@ class ThreadedCommentsHelperTest < ActionView::TestCase
     bucketed_comments = bucket_comments(test_comments)
     assert_not_equal bucketed_comments, test_comments
     assert_equal test_comments.last.id - 1, bucketed_comments.length, bucketed_comments.inspect
-  end
-  
-  # Stub out some of ActionView's helpers so we can test *our* helpers in isolation
-  def link_to_remote(*args)
-    if( args.last.is_a?(Hash))
-      url = args.last[:url]
-      url = "/#{url[:controller]}/#{url[:action]}/#{url[:id]}"
-    end
-    if( args.first.is_a?(String))
-      "<a href=\"#{url}\">#{args.first}</a>"
-    else
-      ""
-    end
-  end
-  
-  def time_ago_in_words(*args)
-    args.first.to_s
   end
   
   private
