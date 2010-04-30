@@ -6,14 +6,14 @@
 
 
 To see the original <%= @comment.class.table_name.singularize -%> and all it's comments:
-<%= __send__(@comment.owner_item.class.table_name.singularize + "_url", @comment.owner_item, :host => THREADED_COMMENTS_CONFIG["site_domain"]) %>
+<%= __send__(@comment.owner_item.class.table_name.singularize + "_url", @comment.owner_item, :host => THREADED_COMMENTS_CONFIG[:notifications][:site_domain]) %>
 
 To see only this comment or to reply directly to it:
-<%= __send__(@comment.owner_item.class.table_name.singularize + "_url", @comment.owner_item, :host => THREADED_COMMENTS_CONFIG["site_domain"]) + "#threaded_comment_#{@comment.id}" %>
+<%= __send__(@comment.owner_item.class.table_name.singularize + "_url", @comment.owner_item, :host => THREADED_COMMENTS_CONFIG[:notifications][:site_domain]) + "#threaded_comment_#{@comment.id}" %>
 
 -----------
 Please click the link below if you don't want to receive further notifications about this comment:
-<%= remove_threaded_comment_notifications_url( :id => @parent_comment.id, :hash => @parent_comment.email_hash, :host => THREADED_COMMENTS_CONFIG["site_domain"]) if( @comment.parent_id != 0 ) -%>
+<%= remove_threaded_comment_notifications_url( :id => @parent_comment.id, :hash => @parent_comment.email_hash, :host => THREADED_COMMENTS_CONFIG[:notifications][:site_domain]) if( @comment.parent_id != 0 ) -%>
 
 
 Please do not respond to this email, this email address is not monitored.

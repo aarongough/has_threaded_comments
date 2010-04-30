@@ -5,20 +5,12 @@ module ThreadedCommentsHelper
       :indent_level => 0,
       :base_indent => 0,
       :parent_id => 0,
-      :max_indent => 1,
-      :rating => true,
-      :sorted => false,
-      :flagging => true,
-      :permalinks => true,
-      :flag_message => "Are you really sure you want to flag this comment?",
-      :no_comments_message => "There aren't any comments yet, be the first to comment!",
-      :header_separator => " - ",
-      :reply_text => "Reply"
-    }.merge(options)
+      :sorted => false
+    }.merge(THREADED_COMMENTS_CONFIG[:render_threaded_comments].dup).merge(options)
     
     return options[:no_comments_message] unless(comments.length > 0)
     unless(options[:sorted])
-      comments = comments.delete_if{|comment| (comment.flags > THREADED_COMMENTS_CONFIG['flag_threshold']) && (THREADED_COMMENTS_CONFIG['flag_threshold'] > 0) }
+      comments = comments.delete_if{|comment| (comment.flags > options[:flag_threshold]) && (options[:flag_threshold] > 0) }
       options[:parent_id] = comments.first.parent_id if(comments.length == 1)
       comments = sort_comments(comments)
     end
@@ -32,14 +24,14 @@ module ThreadedCommentsHelper
       ret << this_indent << "  <div class=\"threaded_comment_container_header\">\n"
       ret << this_indent << "    <span class=\"threaded_comment_name\">By: <strong>#{h comment.name}</strong></span>#{options[:header_separator]}\n"  
       ret << this_indent << "    <span class=\"threaded_comment_age\">#{ time_ago_in_words( comment.created_at ) } ago</span>#{options[:header_separator]}\n"
-      ret << this_indent << "    <a href=\"#threaded_comment_#{comment.id}\" class=\"threaded_comment_link\">permalink</a>#{options[:header_separator] if(options[:flagging])}\n"
-      if(options[:flagging])
+      ret << this_indent << "    <a href=\"#threaded_comment_#{comment.id}\" class=\"threaded_comment_link\">permalink</a>#{options[:header_separator] if(options[:enable_flagging])}\n"
+      if(options[:enable_flagging])
         ret << this_indent << "    <span class=\"flag_threaded_comment_container\" id=\"flag_threaded_comment_container_#{comment.id}\">\n"
         ret << this_indent << "      #{ link_to_remote 'flag', :url => {:controller => 'threaded_comments', :action => 'flag', :id => comment.id}, :method => :post, :confirm => options[:flag_message], :update => { :success => 'flag_threaded_comment_container_' + comment.id.to_s, :failure => 'does_not_exist'}  }\n"
         ret << this_indent << "    </span>\n"
       end
       ret << this_indent << "  </div>\n"
-      if(options[:rating])
+      if(options[:enable_rating])
         ret << this_indent << "  <div class=\"threaded_comment_rating_container\">\n"
         ret << this_indent << "    #{link_to_remote( '', :url => {:controller => 'threaded_comments', :action => 'upmod', :id => comment.id}, :method => :post, :html => {:class=> 'upmod_threaded_comment'}, :update => { :success => 'threaded_comment_rating_' + comment.id.to_s })}\n"
         ret << this_indent << "    <span id=\"threaded_comment_rating_#{comment.id}\" class=\"threaded_comment_rating_text\">#{comment.rating}</span>\n"
@@ -48,7 +40,7 @@ module ThreadedCommentsHelper
       end
       ret << this_indent << "  <div class=\"threaded_comment_body\">#{simple_format(h(comment.body)) }</div>\n"
       ret << this_indent << "  <div class=\"threaded_comment_reply_container\" >\n"
-      ret << this_indent << "    #{link_to_remote(options[:reply_text], :url => {:controller => 'threaded_comments', :action => 'new', :threaded_comment => {:parent_id => comment.id, :threaded_comment_polymorphic_id => comment.threaded_comment_polymorphic_id, :threaded_comment_polymorphic_type => comment.threaded_comment_polymorphic_type}}, :method => :get, :class=> 'comment_reply_link', :update => 'subcomment_container_' + comment.id.to_s, :position => :top)}\n"
+      ret << this_indent << "    #{link_to_remote(options[:reply_link_text], :url => {:controller => 'threaded_comments', :action => 'new', :threaded_comment => {:parent_id => comment.id, :threaded_comment_polymorphic_id => comment.threaded_comment_polymorphic_id, :threaded_comment_polymorphic_type => comment.threaded_comment_polymorphic_type}}, :method => :get, :class=> 'comment_reply_link', :update => 'subcomment_container_' + comment.id.to_s, :position => :top)}\n"
       ret << this_indent << "  </div>\n"
       ret << this_indent << "  <div class=\"threaded_comment_container_footer\"></div>\n"
       ret << this_indent << "</div>\n"
