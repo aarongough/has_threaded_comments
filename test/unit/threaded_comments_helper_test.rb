@@ -16,10 +16,22 @@ class ThreadedCommentsHelperTest < ActionView::TestCase
     end
   end
   
+  test "render_threaded_comments should escape comment names" do
+    test_comment = Factory.build(:threaded_comment, :name => "<> Aaron")
+    rendered_html = render_threaded_comments([test_comment])
+    assert rendered_html.include?(h(test_comment.name)), "Did not escape comment name"
+  end
+  
   test "render_threaded_comments should output comment bodies" do
     @test_comments.each do |comment|
       assert @rendered_html.include?(comment.body), "Did not include comment body"
     end
+  end
+  
+  test "render_threaded_comments should escape comment bodies" do
+    test_comment = Factory.build(:threaded_comment, :body => "<> Aaron")
+    rendered_html = render_threaded_comments([test_comment])
+    assert rendered_html.include?(h(test_comment.body)), "Did not escape comment body"
   end
   
   test "render_threaded_comments should output comment creation times" do
@@ -28,13 +40,31 @@ class ThreadedCommentsHelperTest < ActionView::TestCase
     end
   end
   
-  test "render_threaded_comment options and config" do
+  test "render_threaded_comments should output anchor for each comment" do
+    @test_comments.each do |comment|
+      assert @rendered_html.include?("threaded_comment_#{comment.id}"), "Did not include anchor for comment"
+    end
+  end
+  
+  test "render_threaded_comments should output subcomment container for each comment" do
+    @test_comments.each do |comment|
+      assert @rendered_html.include?("subcomment_container_#{comment.id}"), "Did not include subcomment container for comment"
+    end
+  end
+  
+  test "render_threaded_comments options and config" do
     test_option "rating text", :enable_rating, "threaded_comment_rating_:id"
     test_option "upmod button", :enable_rating, link_to_remote('', :url => {:controller => "threaded_comments", :action => "upmod", :id => ":id"})
     test_option "downmod button", :enable_rating, link_to_remote('', :url => {:controller => "threaded_comments", :action => "downmod", :id => ":id"})
     test_option "flag button", :enable_flagging, link_to_remote('flag', :url => {:controller => "threaded_comments", :action => "flag", :id => ":id"})
     test_option "flag button container", :enable_flagging, "flag_threaded_comment_container_:id"
     test_option "reply link text", :reply_link_text, "Reply"
+  end
+  
+  test "render_threaded_comments should not overwrite global config when options are set" do
+    old_config = old_config = THREADED_COMMENTS_CONFIG.dup
+    @rendered_html = render_threaded_comments(@test_comments, :enable_flagging => false)
+    assert_equal old_config, THREADED_COMMENTS_CONFIG
   end
   
   
@@ -53,7 +83,7 @@ class ThreadedCommentsHelperTest < ActionView::TestCase
   end
   
   def time_ago_in_words(*args)
-    "30 minutes ago"
+    args.first.to_s
   end
   
   private
@@ -115,7 +145,7 @@ class ThreadedCommentsHelperTest < ActionView::TestCase
         end
       else
         flunk "Unrecognized option type: #{THREADED_COMMENTS_CONFIG[namespace][option_name].class}"
-      end   
+      end
     end
   
     def complex_thread(length=100)
