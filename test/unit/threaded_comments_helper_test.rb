@@ -69,6 +69,28 @@ class ThreadedCommentsHelperTest < ActionView::TestCase
     assert_equal old_config, THREADED_COMMENTS_CONFIG
   end
   
+  test "render_threaded_comments should not mark comments with more than max_indent ancestors as indented" do
+    10.times do |max_indent|
+      @rendered_html = render_threaded_comments(@test_comments, :max_indent => max_indent)
+      @test_comments.each do |comment|
+        ancestors = 0
+        if(comment.parent_id > 0)
+          parent_comment = @test_comments[comment.parent_id - @test_comments.first.id]
+          assert_equal comment.parent_id, parent_comment.id 
+          until(parent_comment.parent_id == 0) do
+            parent_comment = @test_comments[parent_comment.parent_id - @test_comments.first.id]
+            ancestors += 1
+          end
+        end
+        subcomment_container_position = @rendered_html.index("subcomment_container_#{comment.id}")
+        assert_not_nil subcomment_container_position
+        @subcomment_html = @rendered_html.slice(subcomment_container_position - 100, 200)
+        assert @subcomment_html.include?('class="subcomment_container"'), "Expecting 'class=\"subcomment_container\"':\n" + @subcomment_html if(max_indent > ancestors)
+        assert @subcomment_html.include?('class="subcomment_container_no_indent"'), "Expecting 'class=\"subcomment_container_no_indent\"':\n" + @subcomment_html if(ancestors >= max_indent)
+      end
+    end
+  end
+  
   test "should bucket comments for rendering" do
     test_comments = create_complex_thread(2)
     assert test_comments.first.is_a?(ThreadedComment)
