@@ -108,7 +108,7 @@ Then follow these steps to use the comment system in your application:
     1: <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     2: <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     3:   <head>
-->  4:     <%= javascript_include_tag 'prototype' -%>
+->  4:     <%= javascript_include_tag :defaults -%>
 ->  5:     <%= stylesheet_link_tag 'threaded_comment_styles' -%>
     6:   </head>
   
