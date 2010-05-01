@@ -15,5 +15,9 @@ module ActionViewStubs
   def time_ago_in_words(*args)
     args.first.to_s
   end
+  
+  def render(options)
+    options
+  end
 
 end

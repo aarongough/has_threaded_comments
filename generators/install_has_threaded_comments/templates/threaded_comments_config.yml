@@ -18,6 +18,14 @@ production:
     flag_threshold:       3
     header_separator:     " - "
     no_comments_message:  There aren't any comments yet, be the first to comment!
+    
+  render_comment_form:
+    name_label:     <strong>Name</strong><br />
+    email_label:    <strong>Email</strong> (so we can notify you when someone replies to your comment)
+    body_label:     2000 characters max. HTML is not allowed.<br />
+    submit_title:   Add Comment
+    partial:        threaded_comments/comment_form
+    honeypot_name:  confirm_email
                           
 development:
   notifications:
@@ -39,6 +47,14 @@ development:
     flag_threshold:       3
     header_separator:     " - "
     no_comments_message:  There aren't any comments yet, be the first to comment!
+    
+  render_comment_form:
+    name_label:     <strong>Name</strong><br />
+    email_label:    <strong>Email</strong> (so we can notify you when someone replies to your comment)
+    body_label:     2000 characters max. HTML is not allowed.<br />
+    submit_title:   Add Comment
+    partial:        threaded_comments/comment_form
+    honeypot_name:  confirm_email
 
 test:
   notifications:
@@ -60,3 +76,11 @@ test:
     flag_threshold:       3
     header_separator:     " - "
     no_comments_message:  There aren't any comments yet, be the first to comment!
+    
+  render_comment_form:
+    name_label:     <strong>Name</strong><br />
+    email_label:    <strong>Email</strong> (so we can notify you when someone replies to your comment)
+    body_label:     2000 characters max. HTML is not allowed.<br />
+    submit_title:   Add Comment
+    partial:        threaded_comments/comment_form
+    honeypot_name:  confirm_email

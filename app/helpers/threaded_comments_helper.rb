@@ -60,15 +60,9 @@ module ThreadedCommentsHelper
   
   def render_comment_form(comment, options={})
     options = {
-      :partial => 'threaded_comments/comment_form',
-      :name_label => '<strong>Name</strong><br />',
-      :email_label => '<strong>Email</strong> (so we can notify you when someone replies to your comment)<br />You may opt-out at any time. Your email address will not be made public or shared in any way. <br />',
-      :body_label => '2000 characters max. HTML is not allowed.<br />Eloquent writing, correct spelling and proper punctuation are strongly encouraged.<br />',
-      :submit_title => 'Add Comment',
-      :honeypot_name => 'confirm_email',
       :timestamp => Time.now.to_i.to_s,
       :comment => comment
-    }.merge(options)    
+    }.merge(THREADED_COMMENTS_CONFIG[:render_comment_form].dup).merge(options)    
     render :partial => options[:partial], :locals => options
   end
   

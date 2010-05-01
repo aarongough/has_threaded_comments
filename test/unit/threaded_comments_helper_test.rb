@@ -8,6 +8,7 @@ class ThreadedCommentsHelperTest < ActionView::TestCase
   def setup
     @test_book = Book.create!(Factory.attributes_for(:book))
     @test_comments = create_complex_thread(2)
+    @test_comment = Factory.build(:threaded_comment)
     @rendered_html = render_threaded_comments(@test_comments)
   end
 
@@ -74,6 +75,46 @@ class ThreadedCommentsHelperTest < ActionView::TestCase
     bucketed_comments = bucket_comments(test_comments)
     assert_not_equal bucketed_comments, test_comments
     assert_equal test_comments.last.id - 1, bucketed_comments.length, bucketed_comments.inspect
+  end
+  
+  test "render_comment_form should use name label from config" do
+    passthrough = render_comment_form(@test_comment)
+    assert_equal passthrough[:locals][:name_label], THREADED_COMMENTS_CONFIG[:render_comment_form][:name_label]
+  end
+  
+  test "render_comment_form should use email label from config" do
+    passthrough = render_comment_form(@test_comment)
+    assert_equal passthrough[:locals][:email_label], THREADED_COMMENTS_CONFIG[:render_comment_form][:email_label]
+  end
+  
+  test "render_comment_form should use body label from config" do
+    passthrough = render_comment_form(@test_comment)
+    assert_equal passthrough[:locals][:body_label], THREADED_COMMENTS_CONFIG[:render_comment_form][:body_label]
+  end
+  
+  test "render_comment_form should use submit label from config" do
+    passthrough = render_comment_form(@test_comment)
+    assert_equal passthrough[:locals][:submit_label], THREADED_COMMENTS_CONFIG[:render_comment_form][:submit_label]
+  end
+  
+  test "render_comment_form should use name label from options" do
+    passthrough = render_comment_form(@test_comment, :name_label => 'test_label')
+    assert_equal passthrough[:locals][:name_label], 'test_label'
+  end
+  
+  test "render_comment_form should use email label from options" do
+    passthrough = render_comment_form(@test_comment, :email_label => 'test_label')
+    assert_equal passthrough[:locals][:email_label], 'test_label'
+  end
+  
+  test "render_comment_form should use body label from options" do
+    passthrough = render_comment_form(@test_comment, :body_label => 'test_label')
+    assert_equal passthrough[:locals][:body_label], 'test_label'
+  end
+  
+  test "render_comment_form should use submit label from options" do
+    passthrough = render_comment_form(@test_comment, :submit_label => 'test_label')
+    assert_equal passthrough[:locals][:submit_label], 'test_label'
   end
   
   private
