@@ -99,12 +99,15 @@ margin: 5px 0;
 }
 
 .subcomment_container{
-width: auto;
 padding-left: 30px;
 }
 
 .subcomment_container_no_indent{
-width: auto;
+}
+
+/* prevent indenting of subcomments that are within a comment
+   that has indenting disabled */
+.subcomment_container_no_indent .subcomment_container{
 padding-left: 0;
 }
 
