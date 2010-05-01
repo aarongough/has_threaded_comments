@@ -45,15 +45,9 @@ module ThreadedCommentsHelper
       ret << this_indent << "  <div class=\"threaded_comment_container_footer\"></div>\n"
       ret << this_indent << "</div>\n"
       
-      if options[:max_indent] <= options[:indent_level] or !comments.first #used to distinguish ajax/html responses
-        ret << this_indent << "<div class=\"subcomment_container_no_indent\" id=\"subcomment_container_#{comment.id}\">\n"
-        ret << render_threaded_comments( comments, options.merge({:parent_id => comment.id, :indent_level => options[:indent_level] + 1, :bucketed => true })) unless( comments[comment.id].nil? )
-        ret << this_indent << "</div>\n"
-      else
-        ret << this_indent << "<div class=\"subcomment_container\" id=\"subcomment_container_#{comment.id}\">\n"
-        ret << render_threaded_comments( comments, options.merge({:parent_id => comment.id, :indent_level => options[:indent_level] + 1, :bucketed => true })) unless( comments[comment.id].nil? )
-        ret << this_indent << "</div>\n"
-      end
+      ret << this_indent << "<div class=\"subcomment_container#{ "_no_indent" if(options[:indent_level] >= options[:max_indent])}\" id=\"subcomment_container_#{comment.id}\">\n"
+      ret << render_threaded_comments( comments, options.merge({:parent_id => comment.id, :indent_level => options[:indent_level] + 1, :bucketed => true })) unless( comments[comment.id].nil? )
+      ret << this_indent << "</div>\n"
     end
     return ret
   end
