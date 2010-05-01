@@ -8,46 +8,15 @@ padding-bottom: 5px;
 }
 
 .threaded_comment_container_header{
-position: absolute;
-top: 0px;
-left: 70px;
 color: #656565;
 font-size: 90%;
 }
 
-.threaded_comment_name{
-color: #2a2a2a;
-font-size: 110%;
-}
-
-.threaded_comment_age{
-
-}
-
-.threaded_comment_link{
-text-decoration: none;
-}
-
-.threaded_comment_link:hover{
-text-decoration: underline;
-}
-
-.flag_threaded_comment_container{
-
-}
-
-.flag_threaded_comment_container a{
-text-decoration: none;
-}
-
-.flag_threaded_comment_container a:hover{
-text-decoration: underline;
-}
-
 .threaded_comment_rating_container{
-position: absolute;
-top: 2px;
-left: 0px;
+display: block;
+width: 60px;
+height: 20px;
+float: left;
 }
 
 .upmod_threaded_comment{
@@ -81,9 +50,41 @@ height: 20px;
 background: transparent url(/has-threaded-comments-images/downmod-arrow.gif) top left no-repeat;
 }
 
+.threaded_comment_name{
+color: #2a2a2a;
+font-size: 110%;
+}
+
+.threaded_comment_age{
+
+}
+
+.threaded_comment_link{
+text-decoration: none;
+}
+
+.threaded_comment_link:hover{
+text-decoration: underline;
+}
+
+.flag_threaded_comment_container{
+
+}
+
+.flag_threaded_comment_container a{
+text-decoration: none;
+}
+
+.flag_threaded_comment_container a:hover{
+text-decoration: underline;
+}
+
 .threaded_comment_body{
-padding-top: 15px;
 margin: 0;
+}
+
+.threaded_comment_body p{
+margin: 5px 0;
 }
 
 .threaded_comment_reply_container{
