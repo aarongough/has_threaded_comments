@@ -65,8 +65,10 @@ Then follow these steps to use the comment system in your application:
 4. Add the code for rendering the comments and the new comment form to your 'show' view
 
     # app/views/books/show.html.erb
-    <%= render_threaded_comments(@book.comments) -%>
-    <%= render_comment_form(@new_comment) -%>
+    <div id="comments_container">
+      <%= render_threaded_comments(@book.comments) -%>
+      <%= render_comment_form(@new_comment) -%>
+    </div>
   
 5. Add threaded_comment_styles.css and prototype.js to your layout
   
