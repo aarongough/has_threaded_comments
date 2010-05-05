@@ -98,6 +98,14 @@ Then follow these steps to use the comment system in your application:
     
 7. Enjoy!
 
+=== Upgrading
+
+Upgrading from a previous version of has_threaded_comments is easy. Simply re-perform
+the steps outlined in the section marked 'installation' above. When you run the 'install_has_threaded_comments'
+generator again it will ask you if you would like to replace your existing config files with the new versions.
+Make sure you backup any changes you made to your config file or stylesheet so that you can add
+them back into the new files.
+
 === Interfaces
 
 has_threaded_comments makes the following interfaces available to your application:
@@ -133,9 +141,6 @@ When has_threaded_comments is fully installed it adds the following files to you
 * public/stylesheets/threaded_comment_styles.css
 * public/has-threaded-comments-images/downmod-arrow.gif
 * public/has-threaded-comments-images/upmod-arrow.gif
-
-
-
 
 
 === Author & Credits
