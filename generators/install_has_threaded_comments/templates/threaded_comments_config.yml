@@ -26,61 +26,17 @@ production:
     submit_title:   Add Comment
     partial:        threaded_comments/comment_form
     honeypot_name:  confirm_email
-                          
-development:
-  notifications:
-    enable_notifications: true
-    enable_comment_creation_failure_notifications: true
-    site_domain:                      yoursite.com
-    admin_email:                      admin@yoursite.com
-    system_send_email_address:        noreply@yoursite.com
-    new_comment_subject:              Yoursite.com - New comment
-    failed_comment_creation_subject:  Yoursite.com - Failed comment creation
-    comment_reply_subject:            Yoursite.com - {name} has replied to your comment
 
-  render_threaded_comments:
-    enable_rating:        true
-    enable_flagging:      true
-    flag_message:         Are you really sure you want to flag this comment?
-    reply_link_text:      Reply
-    max_indent:           3
-    flag_threshold:       3
-    header_separator:     " - "
-    no_comments_message:  There aren't any comments yet, be the first to comment!
-    
-  render_comment_form:
-    name_label:     <strong>Name</strong><br />
-    email_label:    <strong>Email</strong> (so we can notify you when someone replies to your comment)
-    body_label:     2000 characters max. HTML is not allowed.<br />
-    submit_title:   Add Comment
-    partial:        threaded_comments/comment_form
-    honeypot_name:  confirm_email
+# If the config for a particular environment is not found, the default environment settings (production)
+# will be used. This makes it much easier to setup multiple environments with the same settings.
+# You can setup multiple environments by adding new entries with the appropriate top-level name eg:
+#
+# test:
+#   notifications:
+#     enable_notifications: true
+#     enable_comment_creation_failure_notifications: true
+#     site_domain:                      yoursite.com
+#     admin_email:                      admin@yoursite.com
+#     ...
+#     ...
 
-test:
-  notifications:
-    enable_notifications: true
-    enable_comment_creation_failure_notifications: true
-    site_domain:                      yoursite.com
-    admin_email:                      admin@yoursite.com
-    system_send_email_address:        noreply@yoursite.com
-    new_comment_subject:              Yoursite.com - New comment
-    failed_comment_creation_subject:  Yoursite.com - Failed comment creation
-    comment_reply_subject:            Yoursite.com - {name} has replied to your comment
-
-  render_threaded_comments:
-    enable_rating:        true
-    enable_flagging:      true
-    flag_message:         Are you really sure you want to flag this comment?
-    reply_link_text:      Reply
-    max_indent:           3
-    flag_threshold:       3
-    header_separator:     " - "
-    no_comments_message:  There aren't any comments yet, be the first to comment!
-    
-  render_comment_form:
-    name_label:     <strong>Name</strong><br />
-    email_label:    <strong>Email</strong> (so we can notify you when someone replies to your comment)
-    body_label:     2000 characters max. HTML is not allowed.<br />
-    submit_title:   Add Comment
-    partial:        threaded_comments/comment_form
-    honeypot_name:  confirm_email
