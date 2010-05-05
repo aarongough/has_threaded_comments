@@ -140,6 +140,74 @@ class ThreadedCommentsHelperTest < ActionView::TestCase
     assert @rendered_html.include?("fade_level_4"), "Comment was not marked with appropriate fade level"
   end
   
+  test "sort_comments: comments should be sorted by age if ratings are all equal" do
+    comments = []
+    comments << Factory.build(:threaded_comment, :rating => 1, :created_at => 4.hours.ago)
+    comments << Factory.build(:threaded_comment, :rating => 1, :created_at => 3.hours.ago)
+    comments << Factory.build(:threaded_comment, :rating => 1, :created_at => 2.hours.ago)
+    comments << Factory.build(:threaded_comment, :rating => 1, :created_at => 1.hours.ago)
+    sorted_comments = sort_comments(comments)
+    comments.reverse!
+    assert sorted_comments == comments, "Should be:\n#{comments.map{|a| "  #{a.id}, #{a.rating}, #{(Time.now - a.created_at) / 3600}\n"}}\nBut was:\n#{sorted_comments.map{|a| "  #{a.id}, #{a.rating}, #{(Time.now - a.created_at) / 3600}\n"}}"
+  end
+  
+  test "sort_comments: comments should be sorted by rating if ages are all equal" do
+    age = 1.hours.ago
+    comments = []
+    comments << Factory.build(:threaded_comment, :rating => 5, :created_at => age)
+    comments << Factory.build(:threaded_comment, :rating => 4, :created_at => age)
+    comments << Factory.build(:threaded_comment, :rating => 3, :created_at => age)
+    comments << Factory.build(:threaded_comment, :rating => 2, :created_at => age)
+    sorted_comments = sort_comments(comments)
+    assert sorted_comments == comments, "Should be:\n#{comments.map{|a| "  #{a.id}, #{a.rating}, #{(Time.now - a.created_at) / 3600}\n"}}\nBut was:\n#{sorted_comments.map{|a| "  #{a.id}, #{a.rating}, #{(Time.now - a.created_at) / 3600}\n"}}"
+  end
+  
+  test "sort_comments: 'hot' comment should be at the top of the comment list" do
+    comments = []
+    comments << Factory.build(:threaded_comment, :rating => 10, :created_at => 4.hours.ago)
+    comments << Factory.build(:threaded_comment, :rating => 5, :created_at => 4.hours.ago)
+    comments << Factory.build(:threaded_comment, :rating => 1, :created_at => 2.hours.ago)
+    comments << Factory.build(:threaded_comment, :rating => 0, :created_at => 1.hours.ago)
+    sorted_comments = sort_comments(comments)
+    assert sorted_comments == comments, "Should be:\n#{comments.map{|a| "  #{a.id}, #{a.rating}, #{(Time.now - a.created_at) / 3600}\n"}}\nBut was:\n#{sorted_comments.map{|a| "  #{a.id}, #{a.rating}, #{(Time.now - a.created_at) / 3600}\n"}}"
+  end
+  
+  test "sort_comments: really recent comment should be at the top of the comment list" do
+    comments = []
+    comments << Factory.build(:threaded_comment, :rating => 10, :created_at => 4.hours.ago)
+    comments << Factory.build(:threaded_comment, :rating => 5, :created_at => 4.hours.ago)
+    comments << Factory.build(:threaded_comment, :rating => 1, :created_at => 2.hours.ago)
+    comments << Factory.build(:threaded_comment, :rating => 0, :created_at => 1.hours.ago)
+    comments << Factory.build(:threaded_comment, :rating => 0, :created_at => 5.minutes.ago)
+    sorted_comments = sort_comments(comments)
+    comments.insert(0, comments.pop)
+    assert sorted_comments == comments, "Should be:\n#{comments.map{|a| "  #{a.id}, #{a.rating}, #{(Time.now - a.created_at) / 3600}\n"}}\nBut was:\n#{sorted_comments.map{|a| "  #{a.id}, #{a.rating}, #{(Time.now - a.created_at) / 3600}\n"}}"
+  end
+  
+  test "sort_comments: recent comment should be near the top of the comment list" do
+    comments = []
+    comments << Factory.build(:threaded_comment, :rating => 10, :created_at => 4.hours.ago)
+    comments << Factory.build(:threaded_comment, :rating => 5, :created_at => 4.hours.ago)
+    comments << Factory.build(:threaded_comment, :rating => 1, :created_at => 2.hours.ago)
+    comments << Factory.build(:threaded_comment, :rating => 0, :created_at => 1.hours.ago)
+    comments << Factory.build(:threaded_comment, :rating => 0, :created_at => 15.minutes.ago)
+    sorted_comments = sort_comments(comments)
+    comments.insert(1, comments.pop)
+    assert sorted_comments == comments, "Should be:\n#{comments.map{|a| "  #{a.id}, #{a.rating}, #{(Time.now - a.created_at) / 3600}\n"}}\nBut was:\n#{sorted_comments.map{|a| "  #{a.id}, #{a.rating}, #{(Time.now - a.created_at) / 3600}\n"}}"
+  end
+  
+  test "sort_comments: somewhat recent comment should be near the top of the comment list" do
+    comments = []
+    comments << Factory.build(:threaded_comment, :rating => 10, :created_at => 4.hours.ago)
+    comments << Factory.build(:threaded_comment, :rating => 5, :created_at => 4.hours.ago)
+    comments << Factory.build(:threaded_comment, :rating => 1, :created_at => 2.hours.ago)
+    comments << Factory.build(:threaded_comment, :rating => 0, :created_at => 1.hours.ago)
+    comments << Factory.build(:threaded_comment, :rating => 0, :created_at => 35.minutes.ago)
+    sorted_comments = sort_comments(comments)
+    comments.insert(2, comments.pop)
+    assert sorted_comments == comments, "Should be:\n#{comments.map{|a| "  #{a.id}, #{a.rating}, #{(Time.now - a.created_at) / 3600}\n"}}\nBut was:\n#{sorted_comments.map{|a| "  #{a.id}, #{a.rating}, #{(Time.now - a.created_at) / 3600}\n"}}"
+  end
+  
   test "should bucket comments for rendering" do
     test_comments = create_complex_thread(2)
     assert test_comments.first.is_a?(ThreadedComment)

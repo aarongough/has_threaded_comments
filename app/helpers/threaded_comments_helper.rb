@@ -11,6 +11,7 @@ module ThreadedCommentsHelper
     return options[:no_comments_message] unless(comments.length > 0)
     unless(options[:bucketed])
       comments = comments.delete_if{|comment| (comment.flags > options[:flag_threshold]) && (options[:flag_threshold] > 0) }
+      comments = sort_comments(comments)
       options[:parent_id] = comments.first.parent_id if(comments.length == 1)
       comments = bucket_comments(comments)
     end
@@ -62,7 +63,13 @@ module ThreadedCommentsHelper
   
   private
   
-    def bucket_comments( comments )
+    def sort_comments(comments)
+      comments.sort {|a,b|
+        ((b.rating.to_f + 1.0) / ((((Time.now - b.created_at) / 3600).to_f + 0.5) ** 1.25)) <=> ((a.rating.to_f + 1.0) / ((((Time.now - a.created_at) / 3600).to_f + 0.5) ** 1.25))
+      }
+    end
+  
+    def bucket_comments(comments)
       bucketed_comments = []
       comments.each do |comment|
         bucketed_comments[comment.parent_id] = [] if( bucketed_comments[comment.parent_id].nil? )

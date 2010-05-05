@@ -7,5 +7,5 @@ Factory.define :threaded_comment do |f|
   f.sequence(:rating) {|n| n }
   f.threaded_comment_polymorphic_type 'Book'
   f.threaded_comment_polymorphic_id 1
-  f.created_at Time.now.to_i
+  f.created_at Time.now
 end
