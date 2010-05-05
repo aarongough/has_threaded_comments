@@ -20,7 +20,7 @@ module ThreadedCommentsHelper
     
     comments[options[:parent_id]].each do |comment|
       ret << this_indent << "<a name=\"threaded_comment_#{comment.id}\"></a>\n"
-      ret << this_indent << "<div class=\"threaded_comment_container\" >\n"
+      ret << this_indent << "<div class=\"threaded_comment_container #{"fade_level_" if(comment.rating < 0)}#{comment.rating.abs.to_s if(comment.rating < 0 && comment.rating > -5)}#{"4" if(comment.rating < -4)}\" >\n"
       ret << this_indent << "  <div class=\"threaded_comment_container_header\">\n"
       if(options[:enable_rating])
         ret << this_indent << "  <div class=\"threaded_comment_rating_container\">\n"

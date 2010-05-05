@@ -92,6 +92,54 @@ class ThreadedCommentsHelperTest < ActionView::TestCase
     end
   end
   
+  test "render_threaded_comments should not mark comments with a rating of 5 with fade_level" do
+    test_comment = Factory.build(:threaded_comment, :rating => 5)
+    @rendered_html = render_threaded_comments([test_comment])
+    assert !@rendered_html.include?("fade_level"), "Comment should not be marked with fade level"
+  end
+  
+  test "render_threaded_comments should not mark comments with a rating of 0 with fade_level" do
+    test_comment = Factory.build(:threaded_comment, :rating => 0)
+    @rendered_html = render_threaded_comments([test_comment])
+    assert !@rendered_html.include?("fade_level"), "Comment should not be marked with fade level"
+  end
+  
+  test "render_threaded_comments should mark comments with a rating of -1 with fade_level_1" do
+    test_comment = Factory.build(:threaded_comment, :rating => -1)
+    @rendered_html = render_threaded_comments([test_comment])
+    assert @rendered_html.include?("fade_level_1"), "Comment was not marked with appropriate fade level"
+  end
+  
+  test "render_threaded_comments should mark comments with a rating of -2 with fade_level_2" do
+    test_comment = Factory.build(:threaded_comment, :rating => -2)
+    @rendered_html = render_threaded_comments([test_comment])
+    assert @rendered_html.include?("fade_level_2"), "Comment was not marked with appropriate fade level"
+  end
+  
+  test "render_threaded_comments should mark comments with a rating of -3 with fade_level_3" do
+    test_comment = Factory.build(:threaded_comment, :rating => -3)
+    @rendered_html = render_threaded_comments([test_comment])
+    assert @rendered_html.include?("fade_level_3"), "Comment was not marked with appropriate fade level"
+  end
+  
+  test "render_threaded_comments should mark comments with a rating of -4 with fade_level_4" do
+    test_comment = Factory.build(:threaded_comment, :rating => -4)
+    @rendered_html = render_threaded_comments([test_comment])
+    assert @rendered_html.include?("fade_level_4"), "Comment was not marked with appropriate fade level"
+  end
+  
+  test "render_threaded_comments should mark comments with a rating of -5 with fade_level_4" do
+    test_comment = Factory.build(:threaded_comment, :rating => -5)
+    @rendered_html = render_threaded_comments([test_comment])
+    assert @rendered_html.include?("fade_level_4"), "Comment was not marked with appropriate fade level"
+  end
+  
+  test "render_threaded_comments should mark comments with a rating of -10 with fade_level_4" do
+    test_comment = Factory.build(:threaded_comment, :rating => -10)
+    @rendered_html = render_threaded_comments([test_comment])
+    assert @rendered_html.include?("fade_level_4"), "Comment was not marked with appropriate fade level"
+  end
+  
   test "should bucket comments for rendering" do
     test_comments = create_complex_thread(2)
     assert test_comments.first.is_a?(ThreadedComment)

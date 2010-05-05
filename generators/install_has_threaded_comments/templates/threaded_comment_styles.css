@@ -7,6 +7,38 @@ position: relative;
 padding-bottom: 5px;
 }
 
+.fade_level_1 .threaded_comment_body{
+-moz-opacity: 0.80;
+-webkit-opacity: 0.80;
+-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+filter: alpha(opacity=80);
+opacity: 0.80;
+}
+
+.fade_level_2 .threaded_comment_body{
+-moz-opacity: 0.60;
+-webkit-opacity: 0.60;
+-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
+filter: alpha(opacity=60);
+opacity: 0.60;
+}
+
+.fade_level_3 .threaded_comment_body{
+-moz-opacity: 0.35;
+-webkit-opacity: 0.35;
+-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=35)";
+filter: alpha(opacity=35);
+opacity: 0.35;
+}
+
+.fade_level_4 .threaded_comment_body{
+-moz-opacity: 0.12;
+-webkit-opacity: 0.12;
+-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=12)";
+filter: alpha(opacity=12);
+opacity: 0.12;
+}
+
 .threaded_comment_container_header{
 color: #656565;
 font-size: 90%;
