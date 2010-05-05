@@ -140,6 +140,16 @@ class ThreadedCommentsHelperTest < ActionView::TestCase
     assert @rendered_html.include?("fade_level_4"), "Comment was not marked with appropriate fade level"
   end
   
+  test "render_threaded_comments child comments of a flagged comment should not be shown" do
+    @test_comments[0].flags = 5
+    @rendered_html = render_threaded_comments(@test_comments, :flag_threshold => 4)
+    @test_comments.each do |comment|
+      if(comment.parent_id == @test_comments[0].id)
+        assert !@rendered_html.include?(comment.name), "render_threaded_comments should not show child comments of a flagged comment"
+      end
+    end
+  end
+  
   test "sort_comments: comments should be sorted by age if ratings are all equal" do
     comments = []
     comments << Factory.build(:threaded_comment, :rating => 1, :created_at => 4.hours.ago)
