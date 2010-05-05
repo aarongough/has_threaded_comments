@@ -67,18 +67,23 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
     get :new, :threaded_comment => @test_comment
     assert_response :success
     assert_not_nil assigns(:comment)
-    assert @response.body.index(session[:name]), "Response body did not include commenter name"
-    assert @response.body.index(session[:email]), "Response body did not include commenter email"
-    assert @response.body.index(@test_comment[:body]), "Response body did not include body"
-    assert @response.body.index(@test_comment[:threaded_comment_polymorphic_id].to_s), "Response body did not include threaded_comment_polymorphic_id"
-    assert @response.body.index(@test_comment[:threaded_comment_polymorphic_type]), "Response body did not include threaded_comment_polymorphic_type"
-    assert @response.body.index(@test_comment[:parent_id]), "Response body did not include parent_id"
-    assert @response.body.index("threaded_comment[name]"), "Response body did not include form for name"
-    assert @response.body.index("threaded_comment[body]"), "Response body did not include form for body"
-    assert @response.body.index("threaded_comment[email]"), "Response body did not include form for email"
-    assert @response.body.index("threaded_comment[threaded_comment_polymorphic_id]"), "Response body did not include form for threaded_comment_polymorphic_id"
-    assert @response.body.index("threaded_comment[threaded_comment_polymorphic_type]"), "Response body did not include form for threaded_comment_polymorphic_type"
-    assert @response.body.index("threaded_comment[parent_id]"), "Response body did not include form for parent_id"
+    assert @response.body.include?(session[:name]), "Response body did not include commenter name"
+    assert @response.body.include?(session[:email]), "Response body did not include commenter email"
+    assert @response.body.include?(@test_comment[:body]), "Response body did not include body"
+    assert @response.body.include?(@test_comment[:threaded_comment_polymorphic_id].to_s), "Response body did not include threaded_comment_polymorphic_id"
+    assert @response.body.include?(@test_comment[:threaded_comment_polymorphic_type]), "Response body did not include threaded_comment_polymorphic_type"
+    assert @response.body.include?(@test_comment[:parent_id]), "Response body did not include parent_id"
+    assert @response.body.include?("threaded_comment[name]"), "Response body did not include form for name"
+    assert @response.body.include?("threaded_comment[body]"), "Response body did not include form for body"
+    assert @response.body.include?("threaded_comment[email]"), "Response body did not include form for email"
+    assert @response.body.include?("threaded_comment[threaded_comment_polymorphic_id]"), "Response body did not include form for threaded_comment_polymorphic_id"
+    assert @response.body.include?("threaded_comment[threaded_comment_polymorphic_type]"), "Response body did not include form for threaded_comment_polymorphic_type"
+    assert @response.body.include?("threaded_comment[parent_id]"), "Response body did not include form for parent_id"
+    assert @response.body.include?("threaded_comment[#{THREADED_COMMENTS_CONFIG[:render_comment_form][:honeypot_name]}]"), "Response body did not include honeypot form"
+    assert @response.body.include?(THREADED_COMMENTS_CONFIG[:render_comment_form][:name_label]), "Response body did not include name label"
+    assert @response.body.include?(THREADED_COMMENTS_CONFIG[:render_comment_form][:email_label]), "Response body did not include email label"
+    assert @response.body.include?(THREADED_COMMENTS_CONFIG[:render_comment_form][:body_label]), "Response body did not include body label"
+    assert @response.body.include?(THREADED_COMMENTS_CONFIG[:render_comment_form][:submit_title]), "Response body did not include submit title" 
   end
   
   test "should upmod comment" do
