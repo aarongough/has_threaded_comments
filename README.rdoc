@@ -105,8 +105,9 @@ Then follow these steps to use the comment system in your application:
 Upgrading from a previous version of has_threaded_comments is easy!
 
   # Run this from your application's root directory 
-  ./script/plugin update has_threaded_comments
-  ./script/generate install_has_threaded_comments
+  ./script/plugin remove has_threaded_comments
+  
+  # Then re-follow the instructions listed above in the 'installation' section
   
 If you have made changes to any of the has_threaded_comments config or asset files the generator
 will ask you whether or not to overwrite them. It's recommended to backup all these files, overwrite
