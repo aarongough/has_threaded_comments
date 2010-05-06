@@ -4,7 +4,7 @@
 .threaded_comment_container{
 width: 100%;
 position: relative;
-padding-bottom: 5px;
+padding-bottom: 10px;
 }
 
 .fade_level_1 .threaded_comment_body{
@@ -118,7 +118,7 @@ margin: 0;
 }
 
 .threaded_comment_body p{
-margin: 5px 0;
+margin: 5px 0 3px 0;
 }
 
 .threaded_comment_reply_container{
