@@ -1,5 +1,7 @@
 class ThreadedComment < ActiveRecord::Base
 
+  require 'digest/md5'
+
   validates_presence_of   :threaded_comment_polymorphic_id, :threaded_comment_polymorphic_type, :parent_id
   validates_length_of     :name, :within => 2..18
   validates_length_of     :body, :within => 30..2000
@@ -24,7 +26,7 @@ class ThreadedComment < ActiveRecord::Base
   end
   
   def email_hash
-    return "#{self.email}-#{self.created_at}".hash.to_s(16)
+    return Digest::MD5.hexdigest("#{self.email}-#{self.created_at}")
   end
 
 end

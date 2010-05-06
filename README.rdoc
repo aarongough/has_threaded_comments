@@ -1,0 +1,125 @@
+= has_threaded_comments
+
+Feature highlights:
+* Only 7 lines of code need to be added to your application!
+* Complete comment system including UI
+* Minimal barrier to entry for users (no captchas or account creation required)
+* Encourages continuing community participation via comment rating, popularity based sorting, and comment reply notifications
+* Discourages bad behavior via fading of negatively rated comments, and user flagging of comments
+* Automatic comment moderation using validates_text_content (optional)
+
+has_threaded_comments is a Rails plugin that provides an entire threaded commenting
+system with the addition of only a few lines of code to your application. The system includes 
+support for rating and flagging of comments as well as automatically generating email 
+notifications (for both users and website admin) of replies to comments.
+
+has_threaded_comments does not require the user be logged in to create a comment, in 
+keeping with the idea of keeping the barrier to entry as low as possible. It uses 
+reverse captchas (honeypots) to foil spambots.
+
+Additionally has_threaded_comments will use {validates_text_content}[http://github.com/aarongough/validates_text_content] to provide automatic
+content moderation if the {validates_text_content}[http://github.com/aarongough/validates_text_content] plugin has been installed.
+  
+If you have any questions or find an issue with this plugin please contact me at: mailto:aaron@aarongough.com
+
+=== Installation
+
+To install the plugin use one of the following commands:
+
+  # To install via Git using script/plugin:
+  ./script/plugin install git://github.com/aarongough/has_threaded_comments.git
+  
+  # To install via SVN using script/plugin
+  ./script/plugin install http://svn.github.com/aarongough/has_threaded_comments.git
+  
+  # If your application is not under version control you can still install using a SVN export:
+  ./script/plugin install -e http://svn.github.com/aarongough/has_threaded_comments.git
+
+Then you need to copy the configuration files, database migration and UI files into your application like so:
+
+  ./script/generate install_has_threaded_comments
+  
+=== Usage
+
+Then follow these steps to use the comment system in your application:
+
+1. Make sure you you have no pending database migrations
+
+    rake db:migrate
+
+2. Add the has_threaded_comments declaration to your model
+
+    # app/models/book.rb
+    class Book < ActiveRecord::Base
+      has_threaded_comments
+    end
+
+3. Add the code for eager-loading comments and generating a blank comment to your controller
+  
+    # app/controllers/books_controller.rb
+    def show 
+      @book = Book.find(params[:id], :include => {:comments => []})
+      @new_comment = @book.comments.new(:name => session[:name], :email => session[:email])                             
+    end
+
+4. Add the code for rendering the comments and the new comment form to your 'show' view
+
+    # app/views/books/show.html.erb
+    <div id="comments_container">
+      <%= render_threaded_comments(@book.comments) -%>
+      <%= render_comment_form(@new_comment) -%>
+    </div>
+  
+5. Add threaded_comment_styles.css and prototype.js to your layout
+  
+    # app/views/layouts/books.html.erb
+    <head>
+      <%= javascript_include_tag :defaults -%>
+      <%= stylesheet_link_tag 'threaded_comment_styles' -%>
+    </head>
+  
+6. Change the settings in config/threaded_comments_config.yml according to the needs of your application, eg:
+
+    # config/threaded_comments_config.yml
+    production:
+      notifications:
+        enable_notifications: true
+        enable_comment_creation_failure_notifications: true
+        site_domain:                      yoursite.com
+        admin_email:                      admin@yoursite.com
+        system_send_email_address:        noreply@yoursite.com
+        new_comment_subject:              Yoursite.com - New comment
+        failed_comment_creation_subject:  Yoursite.com - Failed comment creation
+        comment_reply_subject:            Yoursite.com - {name} has replied to your comment
+    
+      render_threaded_comments:
+        enable_rating:        true
+        enable_flagging:      true
+        ...
+        ...
+    
+7. Enjoy!
+
+=== Upgrading
+
+Upgrading from a previous version of has_threaded_comments is easy!
+
+  # Run this from your application's root directory 
+  ./script/plugin update has_threaded_comments
+  ./script/generate install_has_threaded_comments
+  
+If you have made changes to any of the has_threaded_comments config or asset files the generator
+will ask you whether or not to overwrite them. It's recommended to backup all these files, overwrite
+them with the new versions and then make any changes you need to. Older versions of the config files
+will cause errors with newer plugin code unless they are updated.
+
+=== More info
+ 
+Please refer to <tt>MORE_INFO.rdoc</tt>
+
+=== Author & Credits
+
+Author:: {Aaron Gough}[mailto:aaron@aarongough.com]
+Contributors:: Julio Capote
+
+Copyright (c) 2010 {Aaron Gough}[http://thingsaaronmade.com/] ({thingsaaronmade.com}[http://thingsaaronmade.com/]), released under the MIT license
