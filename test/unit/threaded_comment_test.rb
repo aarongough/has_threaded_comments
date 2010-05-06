@@ -1,4 +1,5 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'test_helper.rb'))
+require 'digest/md5'
 
 class ThreadedCommentTest < ActiveSupport::TestCase 
   
@@ -81,7 +82,7 @@ class ThreadedCommentTest < ActiveSupport::TestCase
   test "threaded comment email hash creation" do
     assert_difference('ThreadedComment.count') do
       @test_comment = ThreadedComment.create!(Factory.attributes_for(:threaded_comment))
-      assert_equal "#{@test_comment.email}-#{@test_comment.created_at}".hash.to_s(16), @test_comment.email_hash
+      assert_equal Digest::MD5.hexdigest("#{@test_comment.email}-#{@test_comment.created_at}"), @test_comment.email_hash
     end
   end
   

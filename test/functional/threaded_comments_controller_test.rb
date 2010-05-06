@@ -128,7 +128,7 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
     end
   end
   
-  test "should remove emails notifications if hash matches" do
+  test "should remove email notifications if hash matches" do
     test_comment = ThreadedComment.find(1)
     assert !test_comment.email.empty?
     assert test_comment.notifications == true
