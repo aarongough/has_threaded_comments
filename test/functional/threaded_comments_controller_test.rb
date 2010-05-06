@@ -117,13 +117,16 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
       { :action => 'downmod', :field => 'rating', :difference => -1}
     ]
     @actions.each do |action|
-      assert_difference("ThreadedComment.find(1).#{action[:field]}", action[:difference], "Action failed first time: #{action[:action]}") do
-        put action[:action], :id => 1
+      test_comment = ThreadedComment.create!(Factory.attributes_for(:threaded_comment))
+      assert_difference("test_comment.#{action[:field]}", action[:difference], "Action failed first time: #{action[:action]}") do
+        put action[:action], :id => test_comment.id
         assert_response :success
+        test_comment.reload
       end 
-      assert_no_difference( "ThreadedComment.find(1).#{action[:field]}", "Action succeeded when it should have failed: #{action[:action]}") do
-        put action[:action], :id => 1
+      assert_no_difference( "test_comment.#{action[:field]}", "Action succeeded when it should have failed: #{action[:action]}") do
+        put action[:action], :id => test_comment.id
         assert_response :bad_request
+        test_comment.reload
       end
     end
   end
