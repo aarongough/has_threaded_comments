@@ -108,39 +108,9 @@ generator again it will ask you if you would like to replace your existing confi
 Make sure you backup any changes you made to your config file or stylesheet so that you can add
 them back into the new files.
 
-=== Generated Files
-
-When has_threaded_comments is fully installed it adds the following files to your application:
-
-* config/threaded_comments_connfig.yml
-* db/migrate/xxxxxxxxxxxxxx_create_threaded_comments.rb
-* public/stylesheets/threaded_comment_styles.css
-* public/has-threaded-comments-images/downmod-arrow.gif
-* public/has-threaded-comments-images/upmod-arrow.gif
-
-=== Interfaces
-
-has_threaded_comments makes the following interfaces available to your application:
-
-Models:
-* ThreadedComment
-* ThreadedCommentObserver
-* ThreadedCommentNotifier
-
-Controllers:
-* ThreadedCommentsController
-
-Helpers:
-* render_threaded_comments
-* render_comment_form
-
-Routes:
-* /threaded-comments/:id/flag
-* /threaded-comments/:id/upmod
-* /threaded-comments/:id/downmod
-* /threaded-comments
-* /threaded-comments
-* /threaded-comments/:id/remove-notifications/:hash
+=== More info
+ 
+Please refer to {MORE_INFO.rdoc}[link:files/MORE_INFO_rdoc.html]
 
 === Author & Credits
 

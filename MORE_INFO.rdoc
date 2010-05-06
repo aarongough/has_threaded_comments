@@ -1,0 +1,39 @@
+=== API Documentation
+
+To get more details API documentation for has_threaded_comments run 'rake rdoc' in the root directory
+of the plugin after you have installed it.
+
+=== Generated Files
+
+When has_threaded_comments is fully installed it adds the following files to your application:
+
+* config/threaded_comments_connfig.yml
+* db/migrate/xxxxxxxxxxxxxx_create_threaded_comments.rb
+* public/stylesheets/threaded_comment_styles.css
+* public/has-threaded-comments-images/downmod-arrow.gif
+* public/has-threaded-comments-images/upmod-arrow.gif
+
+=== Interfaces
+
+has_threaded_comments makes the following interfaces available to your application:
+
+Models:
+* ThreadedComment
+* ThreadedCommentObserver
+* ThreadedCommentNotifier
+
+Controllers:
+* ThreadedCommentsController
+
+Helpers:
+* render_threaded_comments
+* render_comment_form
+
+Routes:
+  threaded_comment_index                  POST   /threaded-comments(.:format)                     
+  new_threaded_comment                    GET    /threaded-comments/new(.:format)                 
+  threaded_comment                        GET    /threaded-comments/:id(.:format)                 
+  flag_threaded_comment                   POST   /threaded-comments/:id/flag                      
+  upmod_threaded_comment                  POST   /threaded-comments/:id/upmod                     
+  downmod_threaded_comment                POST   /threaded-comments/:id/downmod                   
+  remove_threaded_comment_notifications   GET    /threaded-comments/:id/remove-notifications/:hash
