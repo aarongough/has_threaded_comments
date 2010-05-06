@@ -8,7 +8,7 @@ module ThreadedCommentsHelper
       :bucketed => false
     }.merge(THREADED_COMMENTS_CONFIG[:render_threaded_comments].dup).merge(options)
     
-    return options[:no_comments_message] unless(comments.length > 0)
+    return '<div id="no_comments_message">' + options[:no_comments_message] + '</div>' unless(comments.length > 0)
     unless(options[:bucketed])
       comments = comments.delete_if{|comment| (comment.flags > options[:flag_threshold]) && (options[:flag_threshold] > 0) }
       comments = sort_comments(comments)

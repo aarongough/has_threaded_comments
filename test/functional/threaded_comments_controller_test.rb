@@ -83,7 +83,8 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
     assert @response.body.include?(THREADED_COMMENTS_CONFIG[:render_comment_form][:name_label]), "Response body did not include name label"
     assert @response.body.include?(THREADED_COMMENTS_CONFIG[:render_comment_form][:email_label]), "Response body did not include email label"
     assert @response.body.include?(THREADED_COMMENTS_CONFIG[:render_comment_form][:body_label]), "Response body did not include body label"
-    assert @response.body.include?(THREADED_COMMENTS_CONFIG[:render_comment_form][:submit_title]), "Response body did not include submit title" 
+    assert @response.body.include?(THREADED_COMMENTS_CONFIG[:render_comment_form][:submit_title]), "Response body did not include submit title"
+    assert @response.body.include?('removeChild(message)'), "Response body did not include javascript callback for removing no_comments_message" 
   end
   
   test "should upmod comment" do

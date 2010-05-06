@@ -11,6 +11,12 @@ class ThreadedCommentsHelperTest < ActionView::TestCase
     @test_comment = Factory.build(:threaded_comment)
     @rendered_html = render_threaded_comments(@test_comments)
   end
+  
+  test "render_threaded_comments should output no_comments_message when comments.length = 0" do
+    @rendered_html = render_threaded_comments([])
+    assert @rendered_html.include?(THREADED_COMMENTS_CONFIG[:render_threaded_comments][:no_comments_message]), "The 'no comments' message was not included"
+    assert @rendered_html.include?('id="no_comments_message"'), "The no_comments_message container was not included"
+  end
 
   test "render_threaded_comments should output comment names" do
     @test_comments.each do |comment|
