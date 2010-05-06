@@ -21,7 +21,7 @@ production:
     
   render_comment_form:
     name_label:     <strong>Name</strong><br />
-    email_label:    <strong>Email</strong> (so we can notify you when someone replies to your comment)
+    email_label:    <strong>Email</strong> (so we can notify you when someone replies to your comment)<br />
     body_label:     2000 characters max. HTML is not allowed.<br />
     submit_title:   Add Comment
     partial:        threaded_comments/comment_form
