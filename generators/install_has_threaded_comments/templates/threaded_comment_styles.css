@@ -126,7 +126,11 @@ margin: 5px 0 3px 0;
 }
 
 .threaded_comment_reply_container a{
+text-decoration: none
+}
 
+.threaded_comment_reply_container a:hover{
+text-decoration: underline;
 }
 
 .threaded_comment_container_footer{
