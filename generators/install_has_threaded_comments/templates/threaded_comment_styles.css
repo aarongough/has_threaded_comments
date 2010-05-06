@@ -7,6 +7,11 @@ position: relative;
 padding-bottom: 10px;
 }
 
+.threaded_comment_container a{
+border: none;
+outline: none;
+}
+
 .fade_level_1 .threaded_comment_body{
 -moz-opacity: 0.80;
 -webkit-opacity: 0.80;
