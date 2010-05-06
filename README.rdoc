@@ -110,7 +110,7 @@ them back into the new files.
 
 === More info
  
-Please refer to {MORE_INFO.rdoc}[link:files/MORE_INFO.html]
+Please refer to <tt>MORE_INFO.rdoc</tt>
 
 === Author & Credits
 
