@@ -95,6 +95,11 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
     end
   end
   
+  test "upmodding non-existant comment should cause error" do
+    post :upmod, :id => 9999999
+    assert_response :error
+  end
+  
   test "should downmod comment" do
     assert_difference('ThreadedComment.find(1).rating', -1) do
       post :downmod, :id => 1
@@ -103,11 +108,21 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
     end
   end
   
+  test "downmodding non-existant comment should cause error" do
+    post :downmod, :id => 9999999
+    assert_response :error
+  end
+  
   test "should flag comment" do
     assert_difference('ThreadedComment.find(1).flags') do
       post :flag, :id => 1
       assert_response :success
     end
+  end
+  
+  test "flagging non-existant comment should cause error" do
+    post :flag, :id => 9999999
+    assert_response :error
   end
   
   test "should only allow rating or flagging once per action per session" do
