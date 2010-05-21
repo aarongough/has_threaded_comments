@@ -38,29 +38,32 @@ class ThreadedCommentsController < ActionController::Base
   
   # POST /threaded-comments/1/upmod
   def upmod
-    if( ThreadedComment.exists?(params[:id]) )
+    begin
       @comment = ThreadedComment.find(params[:id])
       render :text => @comment.rating.to_s and return if(@comment.increment!('rating'))
+    rescue ActiveRecord::RecordNotFound
+      head :error
     end
-    head :bad_request
   end
   
   # POST /threaded-comments/1/downmod
   def downmod
-    if( ThreadedComment.exists?(params[:id]) )
+    begin
       @comment = ThreadedComment.find(params[:id])
       render :text => @comment.rating.to_s and return if(@comment.decrement!('rating'))
+    rescue ActiveRecord::RecordNotFound
+      head :error
     end
-    head :bad_request
   end
   
   # POST /threaded-comments/1/flag
   def flag
-    if( ThreadedComment.exists?(params[:id]) )
+    begin
       @comment = ThreadedComment.find(params[:id])
       render :text => "Thanks!" and return if(@comment.increment!('flags'))
+    rescue ActiveRecord::RecordNotFound
+      head :error
     end
-    head :bad_request
   end
   
   # GET /threaded-comments/1/remove-notifications

@@ -37,15 +37,16 @@ class GeneratorTest < Test::Unit::TestCase
     assert_equal "threaded_comment_styles.css", File.basename(new_file)    
   end
   
-  def test_adds_upmod_and_downmod_arrow_images
+  def test_adds_images
     @original_files = file_list('public', 'has-threaded-comments-images')
     Rails::Generator::Scripts::Generate.new.run(["install_has_threaded_comments"], :destination => fake_rails_root, :quiet => true)  
     new_files = (file_list('public', 'has-threaded-comments-images') - @original_files) 
-    assert new_files.length == 2
+    assert_equal 3, new_files.length
     new_files.sort!
-    assert_equal "downmod-arrow.gif", File.basename(new_files.first)
+    assert_equal "ajax-loader.gif", File.basename(new_files.first)
+    assert_equal "downmod-arrow.gif", File.basename(new_files[1])
     assert_equal "upmod-arrow.gif", File.basename(new_files.last)
-  end 
+  end
   
   private 
   

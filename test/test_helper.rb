@@ -4,7 +4,7 @@ require File.expand_path(File.join(ENV['RAILS_ROOT'], 'config/environment.rb'))
 
 require 'test_help'
 require 'test/unit'
-require 'factory_girl' 
+require 'factory_girl'
 
 require_files = []
 require_files << File.join(File.dirname(__FILE__), '..', 'rails', 'init.rb')

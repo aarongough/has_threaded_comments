@@ -95,12 +95,22 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
     end
   end
   
+  test "upmodding non-existant comment should cause error" do
+    post :upmod, :id => 9999999
+    assert_response :error
+  end
+  
   test "should downmod comment" do
     assert_difference('ThreadedComment.find(1).rating', -1) do
       post :downmod, :id => 1
       assert_response :success
       assert @response.body.index(@expected_rating.to_s), "Response body did not include new rating"
     end
+  end
+  
+  test "downmodding non-existant comment should cause error" do
+    post :downmod, :id => 9999999
+    assert_response :error
   end
   
   test "should flag comment" do
@@ -110,6 +120,11 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
     end
   end
   
+  test "flagging non-existant comment should cause error" do
+    post :flag, :id => 9999999
+    assert_response :error
+  end
+  
   test "should only allow rating or flagging once per action per session" do
     @actions = [
       { :action => 'flag', :field => 'flags', :difference => 1},
@@ -117,13 +132,16 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
       { :action => 'downmod', :field => 'rating', :difference => -1}
     ]
     @actions.each do |action|
-      assert_difference("ThreadedComment.find(1).#{action[:field]}", action[:difference], "Action failed first time: #{action[:action]}") do
-        put action[:action], :id => 1
+      test_comment = ThreadedComment.create!(Factory.attributes_for(:threaded_comment))
+      assert_difference("test_comment.#{action[:field]}", action[:difference], "Action failed first time: #{action[:action]}") do
+        put action[:action], :id => test_comment.id
         assert_response :success
+        test_comment.reload
       end 
-      assert_no_difference( "ThreadedComment.find(1).#{action[:field]}", "Action succeeded when it should have failed: #{action[:action]}") do
-        put action[:action], :id => 1
+      assert_no_difference( "test_comment.#{action[:field]}", "Action succeeded when it should have failed: #{action[:action]}") do
+        put action[:action], :id => test_comment.id
         assert_response :bad_request
+        test_comment.reload
       end
     end
   end
