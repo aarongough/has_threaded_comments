@@ -11,7 +11,9 @@ Feature highlights:
 has_threaded_comments is a Rails plugin that provides an entire threaded commenting
 system with the addition of only a few lines of code to your application. The system includes 
 support for rating and flagging of comments as well as automatically generating email 
-notifications (for both users and website admin) of replies to comments.
+notifications (for both users and website admin) of replies to comments. Additionally
+if you have {delayed_job}[http://github.com/tobi/delayed_job] setup then has_threaded_comments 
+will automatically make use of that to send email notifications in a asynchronous manner.
 
 has_threaded_comments does not require the user be logged in to create a comment, in 
 keeping with the idea of keeping the barrier to entry as low as possible. It uses 
@@ -21,6 +23,10 @@ Additionally has_threaded_comments will use {validates_text_content}[http://gith
 content moderation if the {validates_text_content}[http://github.com/aarongough/validates_text_content] plugin has been installed.
   
 If you have any questions or find an issue with this plugin please contact me at: mailto:aaron@aarongough.com
+
+=== Examples
+
+To see an installation of has_threaded_comments in the wild check out the comment system at: {WhyIAmAngry.com}[http://whyiamangry.com/]
 
 === Installation
 
