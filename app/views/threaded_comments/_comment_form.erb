@@ -1,5 +1,19 @@
+<%  remove_submit_script = <<-EOD
+      var submitButton = document.getElementById('threaded_comment_submit_#{timestamp}');
+      var loadingDiv = document.createElement('div');
+      loadingDiv.className = 'loading';
+      submitButton.parentNode.appendChild(loadingDiv);
+      submitButton.parentNode.removeChild(submitButton);
+    EOD
+    
+    remove_message_script = <<-EOD
+      message = document.getElementById('no_comments_message'); 
+      message.parentNode.removeChild(message);
+    EOD
+%>
+
 <div class="new_threaded_comment_form" id="new_threaded_comment_<%= timestamp -%>">
-<% remote_form_for( comment, :url => {:controller => "threaded_comments", :action => "create"}, :update => 'new_threaded_comment_' + timestamp, :complete => 'message = document.getElementById("no_comments_message"); message.parentNode.removeChild(message);' ) do |f| %>
+<% remote_form_for( comment, :url => {:controller => "threaded_comments", :action => "create"}, :update => 'new_threaded_comment_' + timestamp, :after => remove_submit_script, :complete => remove_message_script ) do |f| %>
   <%= f.error_messages %>
   
   <%= f.hidden_field :threaded_comment_polymorphic_id -%>
@@ -27,7 +41,7 @@
   </p>
   
   <p class="new_threaded_comment_submit">
-    <%= f.submit submit_title, :class => 'threaded_comment_submit_input' %>
+    <%= f.submit submit_title, :class => 'threaded_comment_submit_input', :id => "threaded_comment_submit_#{timestamp}" %>
   </p>
 <% end %>         
 </div>
