@@ -1,7 +1,7 @@
 <%  remove_submit_script = <<-EOD
       var submitButton = document.getElementById('threaded_comment_submit_#{timestamp}');
       var loadingDiv = document.createElement('div');
-      loadingDiv.className = 'loading';
+      loadingDiv.className = 'threaded_comment_loading';
       submitButton.parentNode.appendChild(loadingDiv);
       submitButton.parentNode.removeChild(submitButton);
     EOD

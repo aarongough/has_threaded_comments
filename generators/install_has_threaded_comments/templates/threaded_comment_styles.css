@@ -1,6 +1,12 @@
 /************************************************
     Styles for displaying comment threads
 *************************************************/
+.threaded_comment_loading{
+width: 100px;
+height: 32px;
+background: transparent url(/has-threaded-comments-images/ajax-loader.gif) center center no-repeat;
+}
+
 .threaded_comment_container{
 width: 100%;
 position: relative;
