@@ -5,6 +5,7 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
   def setup
     @test_book = Book.create!(Factory.attributes_for(:book))
     ThreadedComment.create!(Factory.attributes_for(:threaded_comment))
+    @request.cookies['threaded_comment_cookies_enabled'] = CGI::Cookie.new('threaded_comment_cookies_enabled', 'true')
   end
   
   test "should get show" do
@@ -139,6 +140,23 @@ class ThreadedCommentsControllerTest < ActionController::TestCase
         test_comment.reload
       end 
       assert_no_difference( "test_comment.#{action[:field]}", "Action succeeded when it should have failed: #{action[:action]}") do
+        put action[:action], :id => test_comment.id
+        assert_response :bad_request
+        test_comment.reload
+      end
+    end
+  end
+  
+  test "actions should fail if cookies are disabled" do
+    @request.cookies['threaded_comment_cookies_enabled'] = nil
+    @actions = [
+      { :action => 'flag', :field => 'flags', :difference => 1},
+      { :action => 'upmod', :field => 'rating', :difference => 1},
+      { :action => 'downmod', :field => 'rating', :difference => -1}
+    ]
+    @actions.each do |action|
+      test_comment = ThreadedComment.create!(Factory.attributes_for(:threaded_comment))
+      assert_no_difference("test_comment.#{action[:field]}", "Action failed first time: #{action[:action]}") do
         put action[:action], :id => test_comment.id
         assert_response :bad_request
         test_comment.reload
