@@ -80,7 +80,7 @@ class ThreadedCommentsController < ActionController::Base
   private
   
     def was_action_already_performed
-      if( session["/threaded-comments/#{params[:id]}/#{params[:action]}"].nil? )
+      if( session["/threaded-comments/#{params[:id]}/#{params[:action]}"].nil? && !cookies[:threaded_comment_cookies_enabled].nil? )
         session["/threaded-comments/#{params[:id]}/#{params[:action]}"] = true
       else
         head :status => :bad_request and return
