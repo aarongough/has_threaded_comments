@@ -40,8 +40,8 @@ module ThreadedCommentsHelper
       end
       ret << this_indent << "  </div>\n"
       ret << this_indent << "  <div class=\"threaded_comment_body\">#{simple_format(h(comment.body))}</div>\n"
-      ret << this_indent << "  <div class=\"threaded_comment_reply_container\" >\n"
-      ret << this_indent << "    #{link_to_remote(options[:reply_link_text], :url => {:controller => 'threaded_comments', :action => 'new', :threaded_comment => {:parent_id => comment.id, :threaded_comment_polymorphic_id => comment.threaded_comment_polymorphic_id, :threaded_comment_polymorphic_type => comment.threaded_comment_polymorphic_type}}, :method => :get, :class=> 'comment_reply_link', :update => 'subcomment_container_' + comment.id.to_s, :position => :top)}\n"
+      ret << this_indent << "  <div class=\"threaded_comment_reply_container\" id=\"threaded_comment_reply_container_#{comment.id}\" >\n"
+      ret << this_indent << "    #{link_to_remote(options[:reply_link_text], :url => {:controller => 'threaded_comments', :action => 'new', :threaded_comment => {:parent_id => comment.id, :threaded_comment_polymorphic_id => comment.threaded_comment_polymorphic_id, :threaded_comment_polymorphic_type => comment.threaded_comment_polymorphic_type}}, :method => :get, :class=> 'comment_reply_link', :update => 'subcomment_container_' + comment.id.to_s, :position => :top, :success => "$('threaded_comment_reply_container_#{comment.id}').remove()")}\n"
       ret << this_indent << "  </div>\n"
       ret << this_indent << "  <div class=\"threaded_comment_container_footer\"></div>\n"
       ret << this_indent << "</div>\n"
