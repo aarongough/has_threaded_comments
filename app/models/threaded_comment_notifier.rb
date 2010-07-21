@@ -1,7 +1,6 @@
 class ThreadedCommentNotifier < ActionMailer::Base
 
   def new_comment_notification( comment )
-    return unless(THREADED_COMMENTS_CONFIG[:notifications][:enable_notifications])
     recipients  THREADED_COMMENTS_CONFIG[:notifications][:admin_email]
     from        THREADED_COMMENTS_CONFIG[:notifications][:system_send_email_address]
     subject     THREADED_COMMENTS_CONFIG[:notifications][:new_comment_subject]
@@ -9,7 +8,6 @@ class ThreadedCommentNotifier < ActionMailer::Base
   end
   
   def comment_reply_notification( user_email, comment )
-    return unless(THREADED_COMMENTS_CONFIG[:notifications][:enable_notifications])
     recipients  user_email
     from        THREADED_COMMENTS_CONFIG[:notifications][:system_send_email_address]
     if( comment.parent_id == 0 )
@@ -23,7 +21,6 @@ class ThreadedCommentNotifier < ActionMailer::Base
   end
   
   def failed_comment_creation_notification( comment )
-    return unless(THREADED_COMMENTS_CONFIG[:notifications][:enable_notifications])
     if(THREADED_COMMENTS_CONFIG[:notifications][:enable_comment_creation_failure_notifications])
       recipients  THREADED_COMMENTS_CONFIG[:notifications][:admin_email]
       from        THREADED_COMMENTS_CONFIG[:notifications][:system_send_email_address]

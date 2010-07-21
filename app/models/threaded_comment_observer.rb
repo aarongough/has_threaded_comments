@@ -1,5 +1,6 @@
 class ThreadedCommentObserver < ActiveRecord::Observer
   def after_create( threaded_comment )
+    return unless(THREADED_COMMENTS_CONFIG[:notifications][:enable_notifications])
     if(ThreadedCommentNotifier.respond_to?(:send_later))
       # Send admin notification
       ThreadedCommentNotifier.send_later(:deliver_new_comment_notification, threaded_comment )
