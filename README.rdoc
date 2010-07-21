@@ -127,6 +127,6 @@ Please refer to <tt>MORE_INFO.rdoc</tt>
 === Author & Credits
 
 Author:: {Aaron Gough}[mailto:aaron@aarongough.com]
-Contributors:: Julio Capote
+Contributors:: {Julio Capote}[http://github.com/capotej], {haon99}[http://github.com/haon99]
 
 Copyright (c) 2010 {Aaron Gough}[http://thingsaaronmade.com/] ({thingsaaronmade.com}[http://thingsaaronmade.com/]), released under the MIT license
